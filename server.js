@@ -1,11 +1,16 @@
 const express = require('express');
-const app = express();
 const session = require('express-session');
 const passport = require('passport');
 const passportlocal = require('passport-local')
 const FacebookStrategy = require('passport-facebook').Strategy;
-const authroutes = require('./routes/authroutes.js');
+const authroutes = require('./routes/authroutes.js'),
+      books = require('./routes/books.js'),
+      dashboards = require('./routes/dashboards.js');
 const config = require('./config')
+const mongoose = require("mongoose"),
+      bodyParser = require("body-parser"),
+      app = express(), 
+      user = require('./models/user');
 
 app.set('view engine', 'ejs');
 
@@ -17,6 +22,14 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+mongoose.connect('mongodb+srv://garzip:uR7lntmgguFvOFQ8@cluster0.ihy1b.mongodb.net/Garzip?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true },
+    err => {
+        if (!err)
+            console.log('Mongodb connection succeeded.')
+        else
+            console.log('Error while connecting MongoDB : ' + JSON.stringify(err, undefined, 2))
+    });
 
 passport.serializeUser(function (user, cb) {
   cb(null, user);
@@ -38,6 +51,8 @@ passport.use(new FacebookStrategy({
 ));
 
 app.use('/', authroutes);
+app.use('/book', books);
+// app.use('/dashboard', dashboards);
 
 const port = 3000;
 

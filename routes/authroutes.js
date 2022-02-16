@@ -1,6 +1,9 @@
 const passport = require('passport');
 const express = require('express');
 var router = express.Router();
+const user = require('../models/user');
+const book = require('../models/book');
+const dashboard = require('../models/dashboard');
 
 router.get('/', function (req, res) {
   res.render('pages/index.ejs'); // load the index.ejs file
@@ -30,20 +33,20 @@ router.post('/auth/normal', passport.authenticate('local', {
   failureFlash: 'error'
 }));
 
-router.post("/auth/normal", function(req, res){
-  if(req.body.password != req.body.c_password){
-      console.log("confirm password error")
-      return res.sendStatus(400)
+router.post("/auth/normal", function (req, res) {
+  if (req.body.password != req.body.c_password) {
+    console.log("confirm password error")
+    return res.sendStatus(400)
   }
-  user.register(new user({username: req.body.username}), req.body.password,function(error, user){
-      if(error){
-          console.log(error);
-          return res.render('register')
-      }
-      passport.authenticate('local')(req,res,function(){
-          req.flash('success','Welcome ,'+ user.username)
-          res.sendStatus(201)
-      })
+  user.register(new user({ username: req.body.username }), req.body.password, function (error, user) {
+    if (error) {
+      console.log(error);
+      return res.render('register')
+    }
+    passport.authenticate('local')(req, res, function () {
+      req.flash('success', 'Welcome ,' + user.username)
+      res.sendStatus(201)
+    })
   })
 })
 
@@ -57,8 +60,8 @@ router.get('/auth/facebook/callback',
   passport.authenticate('facebook', {
     successRedirect: '/profile',
     failureRedirect: '/error'
-}));
-  
+  }));
+
 //-----------------------------------//
 
 router.get('/logout', function (req, res) {
