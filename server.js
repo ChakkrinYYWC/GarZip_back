@@ -14,6 +14,11 @@ const mongoose = require("mongoose"),
 
 app.set('view engine', 'ejs');
 
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+
+// app.use(express.urlencoded());
+
 app.use(session({
   resave: false,
   saveUninitialized: true,
@@ -50,7 +55,7 @@ passport.use(new FacebookStrategy({
   }
 ));
 
-app.use('/', authroutes);
+app.use('/auth', authroutes);
 app.use('/book', books);
 // app.use('/dashboard', dashboards);
 

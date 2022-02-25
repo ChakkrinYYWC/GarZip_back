@@ -15,6 +15,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+  console.log(req.body)
   var newRecord = new book({
       id: "w1",
       name: "w2",
