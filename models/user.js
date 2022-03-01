@@ -5,7 +5,7 @@ let userSchema = new mongoose.Schema({
     // username : String,
     email : String,
     mode : Boolean,
-    name : String,
+    username : String,
     savebook : {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Books"

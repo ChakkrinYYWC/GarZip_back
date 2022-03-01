@@ -3,6 +3,7 @@ const session = require('express-session');
 const passport = require('passport');
 const passportlocal = require('passport-local')
 const FacebookStrategy = require('passport-facebook').Strategy;
+const flash = require("connect-flash")
 const authroutes = require('./routes/authroutes.js'),
       books = require('./routes/books.js'),
       dashboards = require('./routes/dashboards.js');
@@ -17,6 +18,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+app.use(flash())
 // app.use(express.urlencoded());
 
 app.use(session({
