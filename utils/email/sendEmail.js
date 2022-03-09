@@ -7,14 +7,16 @@ const sendEmail = async (email, subject, payload, template) => {
   try {
     // create reusable transporter object using the default SMTP transport
     const transporter = nodemailer.createTransport({
-      host: "localhost://3000",
+      // host: 'localhost',
+      service: "Gmail",
       port: 465,
+      secure: true,
       auth: {
-        user: "FOOlISH NESS",
-        pass: "@Chakkrin241142", // naturally, replace both with your real credentials or an application-specific password
+        user: "hentaidasu@gmail.com",
+        pass: "xmhqmwzydajtxsxk", // naturally, replace both with your real credentials or an application-specific password
       },
     });
-
+    
     const source = fs.readFileSync(path.join(__dirname, template), "utf8");
     const compiledTemplate = handlebars.compile(source);
     const options = () => {
@@ -29,6 +31,7 @@ const sendEmail = async (email, subject, payload, template) => {
     // Send email
     transporter.sendMail(options(), (error, info) => {
       if (error) {
+        console.log(error)
         return error;
       } else {
         return res.status(200).json({

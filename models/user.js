@@ -5,7 +5,10 @@ let userSchema = new mongoose.Schema({
     // username : String,
     email : String,
     mode : Boolean,
-    username : String,
+    username : {
+        type : String,
+        unique : true
+    },
     savebook : {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Books"
