@@ -6,6 +6,7 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const flash = require("connect-flash")
 const authroutes = require('./routes/authroutes.js'),
       books = require('./routes/books.js'),
+      // Book = require('./models/book');
       userdata = require('./routes/userdata')
       dashboards = require('./routes/dashboards.js');
 const config = require('./config')
@@ -13,12 +14,12 @@ const mongoose = require("mongoose"),
       bodyParser = require("body-parser"),
       app = express(), 
       user = require('./models/user');
+      cors = require('cors')
 
 app.set('view engine', 'ejs');
-
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-
+app.use(cors())
 app.use(flash())
 // app.use(express.urlencoded());
 
@@ -62,6 +63,14 @@ app.use('/auth', authroutes);
 app.use('/book', books);
 app.use('/user', userdata)
 // app.use('/dashboard', dashboards);
+
+// app.get('/api', function (req, res) {
+//   console.log('fetching reviews');
+//   Book.find(function (err, doc) {
+//     if (err) res.send(err);
+//     res.send(doc); 
+//   });
+// });
 
 const port = 3000;
 
