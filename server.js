@@ -5,18 +5,19 @@ const passportlocal = require('passport-local')
 const FacebookStrategy = require('passport-facebook').Strategy;
 const authroutes = require('./routes/authroutes.js'),
       books = require('./routes/books.js'),
+      Book = require('./models/book');
       dashboards = require('./routes/dashboards.js');
 const config = require('./config')
 const mongoose = require("mongoose"),
       bodyParser = require("body-parser"),
       app = express(), 
       user = require('./models/user');
+      cors = require('cors')
 
 app.set('view engine', 'ejs');
-
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-
+app.use(cors())
 // app.use(express.urlencoded());
 
 app.use(session({
@@ -58,6 +59,14 @@ passport.use(new FacebookStrategy({
 app.use('/auth', authroutes);
 app.use('/book', books);
 // app.use('/dashboard', dashboards);
+
+app.get('/api', function (req, res) {
+  console.log('fetching reviews');
+  Book.find(function (err, doc) {
+    if (err) res.send(err);
+    res.send(doc); 
+  });
+});
 
 const port = 3000;
 

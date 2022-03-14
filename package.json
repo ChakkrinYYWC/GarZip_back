@@ -19,10 +19,12 @@
   "homepage": "https://github.com/Hentaidasiu/GarZip_back#readme",
   "dependencies": {
     "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
     "ejs": "^3.1.6",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
     "install": "^0.13.0",
+    "moment": "^2.29.1",
     "mongoose": "^6.2.0",
     "npm": "^8.5.2",
     "passport": "^0.5.2",

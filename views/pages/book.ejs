@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Audio Books</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <style>
+        .facebook {
+            background-color: #3b5998 !important;
+            color: #fff !important;
+        }
+
+        .fa-facebook-f:before,
+        .fa-facebook:before {
+            content: "\f09a";
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="light-blue lighten-1" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="#" class="brand-logo">Audio Books</a>
+        </div>
+    </nav>
+
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <div class="row center">
+                <div class="col-6 col-md-4">
+
+                    <form method="POST" action="/book">
+                        <div class="form-group">
+                            <input class="form-control" name="book_id" placeholder="book id">
+                            <input class="form-control" name="name" placeholder="name">
+                            <input class="form-control" name="auther" placeholder="auther">
+                            <input class="form-control" name="trailer" placeholder="trailer">
+                            <input class="form-control" name="text" placeholder="text">
+                            <input class="form-control" name="image" placeholder="url image">
+                            <label for="exampleFormControlSelect1">Category</label>
+                            <select class="form-control" id="exampleFormControlSelect1" name="category">
+                                <option>ทั่วไป</option>
+                                <option>นิยาย</option>
+                                <option>ธุรกิจ</option>
+                                <option>นิทาน</option>
+                                <option>ศาสนา</option>
+                                <option>บทความ</option>
+                                <option>สืบสวน</option>
+                                <option>จิตวิทยา</option>
+                            </select>
+
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+                </div>
+                <br><br>
+                <% books.sort((a, b) => (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
+                    <div class="col-6 col-md-4">
+                        <div class="card">
+                            <!-- <button >edit</button> -->
+                            <img src= <%=data.image %> >
+                            <span class="title">name : <%= data.name %></span>
+                            <span>book id : <%= data.book_id %></span>
+                            <div>auther : <%= data.auther %>
+                            </div>
+                            <div>text : <%= data.text %>
+                            </div>
+                            <div>trailer : <%= data.trailer %>
+                            </div>
+                            <div>view : <%= data.view %>
+                            </div>
+                            <div>category : <%= data.category %>
+                            </div>
+                            <div>
+                                create_date : <%= moment(data.create_date).format('DD MMMM YYYY HH:mm:ss') %>
+                            </div>
+     
+                          <div>
+                            <a href="<%= `/book/${data._id}?_method=DELETE` %>"
+                            onclick="return confirm('ยืนยันลบหนังสือเสียง <%= data.name %> ?')">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
+            </div>
+        </div>
+
+</body>
+
+</html>
