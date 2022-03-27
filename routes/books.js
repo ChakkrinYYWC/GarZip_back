@@ -1,73 +1,89 @@
-const   passport = require('passport'),
-        express = require('express'),
-        book = require('../models/book');
+const passport = require('passport'),
+  express = require('express'),
+  book = require('../models/book');
+moment = require("moment");
 
 var router = express.Router();
 
 router.get('/', (req, res) => {
   book.find((err, docs) => {
-    if (!err){
-      res.send(docs)
-    //   res.render('pages/index.ejs')
-    }else
+    if (!err) {
+      // res.send(docs)
+      res.render('pages/book.ejs', { 'books': docs })
+    } else
       console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
   })
 })
 
+
 router.post('/', async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
+  // console.log('category :: '+req.body.category)
   var newRecord = new book({
-      id: "w1",
-      name: "w2",
-      auther: "w3",
-      trailer: "ww4",
-      text: "w5",
-      category: "w6",
-      view: 77
+    book_id: req.body.book_id,
+    name: req.body.name,
+    auther: req.body.auther,
+    trailer: req.body.trailer,
+    text: req.body.text,
+    image: req.body.image,
+    category: req.body.category,
+    view : 0,
   })
   console.log(newRecord)
   newRecord.save((err, docs) => {
-    if (!err){
+    if (!err) {
       console.log("save successful");
-      res.send(docs)
-    }else
+      // res.send(docs)
+      res.redirect('/book')
+    } else
       console.log('Error #2 : ' + JSON.stringify(err, undefined, 2))
   })
 })
 
 router.put('/:id', (req, res) => {
-    // if (!ObjectID.isValid(req.params.id))
-    //     return res.status(400).send('No record with given id : ' + req.params.id)
-    
-    var updatedRecord = {
-        name: "q2",
-        auther: "q3",
-        trailer: "qq4",
-        text: "q5",
-        category: "q6",
-        view: 00
-    }
-    console.log(updatedRecord)
-    book.findByIdAndUpdate(req.params.id, { $set: updatedRecord }, { new: true }, (err, docs) => {
-        if (!err){
-            console.log("update successful");
-            res.send(docs)
-        }else
-            console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
-    })
+
+  var updatedRecord = {
+    book_id: req.body.book_id,
+    name: req.body.name,
+    auther: req.body.auther,
+    trailer: req.body.trailer,
+    text: req.body.text,
+    category: req.body.category,
+    // view: req.body.view
+  }
+  console.log(updatedRecord)
+  book.findByIdAndUpdate(req.params.id, { $set: updatedRecord }, { new: true }, (err, docs) => {
+    if (!err) {
+      console.log("update successful");
+      res.send(docs)
+    } else
+      console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
+  })
 })
 
 router.delete('/:id', (req, res) => {
-    // if (!ObjectID.isValid(req.params.id))
-    //     return res.status(400).send('No #4 : ' + req.params.id)
+  book.findByIdAndRemove(req.params.id, (err, docs) => {
+    if (!err) {
+      console.log("delete successful");
+      // res.send(docs)
+      res.redirect('/book')
+    } else
+      console.log('Error #4 : ' + JSON.stringify(err, undefined, 2))
+  })
+})
 
-    book.findByIdAndRemove(req.params.id, (err, docs) => {
-        if (!err){
-            console.log("delete successful");
-            res.send(docs)
-        }else
-            console.log('Error #4 : ' + JSON.stringify(err, undefined, 2))
-    })
+
+
+// ----------------- App ----------------
+router.get('/app', (req, res) => {
+  // console.log('##')
+  book.find((err, docs) => {
+    if (!err) {
+      // console.log(docs)
+      res.send(docs)
+    } else
+      console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
+  })
 })
 
 
