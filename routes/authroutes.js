@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
 
 //-----------------------------------//
 
-router.get('/login', passport.authenticate('local', {failureMessage: "username or password incorrect.", failureFlash: "username or password incorrect."}),async function(req, res){
+router.post('/login', passport.authenticate('local'),async function(req, res){
   const user = await User.aggregate([
     {
       $match: {
