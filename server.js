@@ -4,6 +4,7 @@ const passport = require('passport');
 const passportlocal = require('passport-local')
 const FacebookStrategy = require('passport-facebook').Strategy;
 const flash = require("connect-flash")
+const cors = require("cors");
 const authroutes = require('./routes/authroutes.js'),
       books = require('./routes/books.js'),
       userdata = require('./routes/userdata')
@@ -30,6 +31,8 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(cors());
 
 mongoose.connect('mongodb+srv://garzip:uR7lntmgguFvOFQ8@cluster0.ihy1b.mongodb.net/Garzip?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true },
     err => {
