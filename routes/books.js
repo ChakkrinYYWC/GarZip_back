@@ -5,6 +5,7 @@ moment = require("moment");
 
 var router = express.Router();
 
+
 router.get('/', (req, res) => {
   book.find((err, docs) => {
     if (!err) {
@@ -73,11 +74,19 @@ router.delete('/:id', (req, res) => {
 })
 
 
-
 // ----------------- App ----------------
 router.get('/app', (req, res) => {
-  // console.log('##')
   book.find((err, docs) => {
+    if (!err) {
+      res.send(docs)
+    } else
+      console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
+  })
+})
+
+router.get('/app/:name', (req, res) => {
+  // console.log(req.params.name)
+  book.find({category: req.params.name}, (err, docs) => {
     if (!err) {
       // console.log(docs)
       res.send(docs)
@@ -86,5 +95,15 @@ router.get('/app', (req, res) => {
   })
 })
 
+router.get('/app/detail/:id', (req, res) => {
+  // console.log(req.params.id)
+  book.find({_id: req.params.id}, (err, docs) => {
+    if (!err) {
+      // console.log(docs)
+      res.send(docs)
+    } else
+      console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
+  })
+})
 
 module.exports = router;
