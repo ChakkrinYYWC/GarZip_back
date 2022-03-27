@@ -15,7 +15,6 @@ const mongoose = require("mongoose"),
       bodyParser = require("body-parser"),
       app = express(), 
       user = require('./models/user');
-      cors = require('cors')
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }))
