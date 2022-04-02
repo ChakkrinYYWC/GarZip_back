@@ -68,13 +68,6 @@ app.use('/user', userdata)
 app.use('/search', search)
 // app.use('/dashboard', dashboards);
 
-// app.get('/api', function (req, res) {
-//   console.log('fetching reviews');
-//   Book.find(function (err, doc) {
-//     if (err) res.send(err);
-//     res.send(doc); 
-//   });
-// });
 
 const port = 3000;
 
