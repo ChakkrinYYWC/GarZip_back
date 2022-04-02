@@ -9,6 +9,7 @@ const authroutes = require('./routes/authroutes.js'),
       books = require('./routes/books.js'),
       // Book = require('./models/book');
       userdata = require('./routes/userdata')
+      search = require('./routes/search')
       dashboards = require('./routes/dashboards.js');
 const config = require('./config')
 const mongoose = require("mongoose"),
@@ -64,6 +65,7 @@ passport.use(new FacebookStrategy({
 app.use('/auth', authroutes);
 app.use('/book', books);
 app.use('/user', userdata)
+app.use('/search', search)
 // app.use('/dashboard', dashboards);
 
 

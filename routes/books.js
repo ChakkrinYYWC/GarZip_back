@@ -95,6 +95,23 @@ router.get('/app/:name', (req, res) => {
   })
 })
 
+//select book catagory//
+router.post("/catagory", async function (req, res) {
+  const catagory = req.body.catagory
+  let found_book = await book.aggregate([
+      {
+          $match: {
+            category: catagory
+          }
+      }
+  ])
+  if(found_book.length == 0){
+      res.status(200).send("Not found")
+  }else{
+      res.status(200).send(found_book)
+  }
+})
+
 router.get('/app/detail/:id', (req, res) => {
   // console.log(req.params.id)
   book.find({_id: req.params.id}, (err, docs) => {
