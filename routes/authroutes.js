@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
 
 //-----------------------------------//
 
-router.post('/login', passport.authenticate('local'),async function(req, res){
+router.post('/login', passport.authenticate('local', {successFlash: 'Welcome!'}),async function(req, res){
   const user = await User.aggregate([
     {
       $match: {
@@ -42,15 +42,14 @@ router.post('/login', passport.authenticate('local'),async function(req, res){
 
 router.post("/register", function (req, res) {
   if (req.body.password != req.body.c_password) {
-    console.log("confirm password error")
-    return res.sendStatus(400)
+    return res.Status(400).send("confirm password error")
   }
   User.register(new User({ email: req.body.email, mode: req.body.mode, username: req.body.username}), req.body.password, function (error, user) {
     if (error) {
       console.log(error);
       res.status(400).send("A user with the given username is already registered")
     }
-    passport.authenticate('local')(req, res, function () {
+    passport.authenticate('local', {successFlash: 'Welcome!'})(req, res, function () {
       res.sendStatus(201)
     })
   })

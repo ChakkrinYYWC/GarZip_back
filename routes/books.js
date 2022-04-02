@@ -86,5 +86,22 @@ router.get('/app', (req, res) => {
   })
 })
 
+//select book catagory//
+router.post("/catagory", async function (req, res) {
+  const catagory = req.body.catagory
+  let found_book = await book.aggregate([
+      {
+          $match: {
+            category: catagory
+          }
+      }
+  ])
+  if(found_book.length == 0){
+      res.status(200).send("Not found")
+  }else{
+      res.status(200).send(found_book)
+  }
+})
+
 
 module.exports = router;
