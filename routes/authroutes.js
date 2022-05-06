@@ -10,7 +10,7 @@ const sendEmail = require("../utils/email/sendEmail");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const mongoose = require('mongoose');
-const bcryptSalt = process.env.BCRYPT_SALT;
+const bcryptSalt = 10;
 router.get('/', function (req, res) {
   res.render('pages/index.ejs'); // load the index.ejs file
 });
@@ -23,17 +23,17 @@ router.get('/', function (req, res) {
 
 //-----------------------------------//
 
-router.post('/login', passport.authenticate('local', {successFlash: 'Welcome!'}),async function(req, res){
+router.post('/login', passport.authenticate('local', { successFlash: 'Welcome!' }), async function (req, res) {
   const user = await User.aggregate([
     {
       $match: {
-        username : req.body.username
+        username: req.body.username
       }
     },
     {
-      $project : {
-        "salt" : 0,
-        "hash" : 0
+      $project: {
+        "salt": 0,
+        "hash": 0
       }
     }
   ])
@@ -44,12 +44,12 @@ router.post("/register", function (req, res) {
   if (req.body.password != req.body.c_password) {
     return res.Status(400).send("confirm password error")
   }
-  User.register(new User({ email: req.body.email, mode: req.body.mode, username: req.body.username}), req.body.password, function (error, user) {
+  User.register(new User({ email: req.body.email, mode: req.body.mode, username: req.body.username }), req.body.password, function (error, user) {
     if (error) {
       console.log(error);
       res.status(400).send("A user with the given username is already registered")
     }
-    passport.authenticate('local', {successFlash: 'Welcome!'})(req, res, function () {
+    passport.authenticate('local', { successFlash: 'Welcome!' })(req, res, function () {
       res.sendStatus(201)
     })
   })
@@ -75,9 +75,8 @@ router.get('/logout', function (req, res) {
 
 //-----------------------------------//
 
-router.get('/passwordforgotten',async function (req, res) {
-  const user = await User.findOne({ email:req.body.email });
-
+router.post('/passwordforgotten', async function (req, res) {
+  const user = await User.findOne({ email: req.body.email });
   if (!user) console.log("User does not exist")
   let token = await Token.findOne({ userId: user._id });
   if (token) await token.deleteOne();
@@ -90,39 +89,43 @@ router.get('/passwordforgotten',async function (req, res) {
     createdAt: Date.now(),
   }).save();
 
-  const link = `localhost:3000/auth/passwordReset/${resetToken}/${user._id}`;
-  sendEmail(user.email,"Password Reset Request",{name: user.username,link: link,},"./templates/requestResetPassword.handlebars");
+  const link = `http://localhost:3000/auth/confirmresetpassword/${resetToken}/${user._id}`;
+  sendEmail(user.email, "Password Reset Request", { name: user.username, link: link, }, "./templates/requestResetPassword.handlebars");
   res.sendStatus(200)
   return link;
 });
 
 //-----------------------------------//
+router.get('/confirmresetpassword/:token/:id', function (req, res) {
+  const token = req.params.token
+  const id = req.params.id
+  res.render('pages/resetpassword.ejs', { token: token, id: id })
+})
+//-----------------------------------//
 
-router.get('/passwordReset/:token/:id',async function (req, res) {
-  let targetuser = await User.findOne({ _id: req.params.id });
-  let passwordResetToken = await Token.findOne({ userId: req.params.id });
-  if (!passwordResetToken) {
-    throw new Error("Invalid or expired password reset token");
-  }
-  const isValid = await bcrypt.compare(req.params.token, passwordResetToken.token);
-  if (!isValid) {
-    throw new Error("Invalid or expired password reset token");
-  }
-  // const hash = await bcrypt.hash(String(password), Number(targetuser[0].salt));
-  // await User.updateOne(
-  //   { _id: req.params.id },
-  //   { $set: { hash: hash } },
-  //   { new: true }
-  // );
-  targetuser.setPassword(req.body.password,async function(err, user){
-    if(err){
-      console.log(err)
+router.post('/passwordReset/:token/:id', async function (req, res) {
+  console.log(req.params.token)
+  if (req.body.password !== req.body.c_password) {
+    res.send("Your repeat password was incorrect. Please try again").status(400)
+  } else {
+    let targetuser = await User.findOne({ _id: req.params.id });
+    let passwordResetToken = await Token.findOne({ userId: req.params.id });
+    if (!passwordResetToken) {
+      throw new Error("Invalid or expired password reset token");
     }
-    await targetuser.save()
-    await passwordResetToken.deleteOne();
-    res.sendStatus(200)
-  });
-
+    const isValid = await bcrypt.compare(req.params.token, passwordResetToken.token);
+    if (!isValid) {
+      throw new Error("Invalid or expired password reset token");
+    }
+    targetuser.setPassword(req.body.password, async function (err, user) {
+      if (err) {
+        console.log(err)
+      }
+      await targetuser.save()
+      await passwordResetToken.deleteOne();
+      res.send("Your password has been changed.").status(200)
+    });
+  }
   return true;
 });
 
