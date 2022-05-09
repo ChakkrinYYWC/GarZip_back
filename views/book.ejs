@@ -23,7 +23,7 @@
     .namepage{
         font-family: 'Poppins', sans-serif;
         color: #707070;
-        padding: 50px;
+        padding: 30px;
         text-align: center;
     }
    
@@ -31,7 +31,7 @@
         /* float: center; */
        
         border-radius: 20px;
-        width: 60%;
+        width: 50%;
         background-color: rgb(255, 255, 255);
     }
     .form{
@@ -41,6 +41,17 @@
         width: 100%;
         margin: 10px;
         border-radius: 20px;
+
+    }
+    .btn{
+        background-color: #695CFE;
+        border-radius: 50px;
+        color: white;
+        margin-top: 30px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(237, 236, 236, 0.19);
+    }
+    .btn:hover{
+        background-color: #a7a7a7;
 
     }
 </style>
@@ -59,14 +70,14 @@
 
                     <form method="POST" action="/book" class="form">
                         <div class="form-group">
-                            <input class="form-control" name="book_id" placeholder="book id">
-                            <input class="form-control" name="name" placeholder="name">
-                            <input class="form-control" name="auther" placeholder="auther">
+                            <input class="form-control" name="book_id" placeholder="book id" required>
+                            <input class="form-control" name="name" placeholder="name" required>
+                            <input class="form-control" name="auther" placeholder="auther" required>
                             <input class="form-control" name="trailer" placeholder="trailer">
                             <input class="form-control" name="text" placeholder="text">
-                            <input class="form-control" name="image" placeholder="url image">
+                            <input class="form-control" name="image" placeholder="url image" required>
                             <label for="exampleFormControlSelect1">Category</label>
-                            <select class="form-control" id="exampleFormControlSelect1" name="category">
+                            <select class="form-control" id="exampleFormControlSelect1" name="category" required>
                                 <option>ทั่วไป</option>
                                 <option>นิยาย</option>
                                 <option>ธุรกิจ</option>
@@ -84,7 +95,7 @@
                 </div>
 
 
-                <!-- <br><br>
+                <br><br>
                 <% books.sort((a, b) => (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
                     <div class="col-6 col-md-4">
                         <div class="card">
@@ -112,7 +123,7 @@
                             </div>
                         </div>
                     </div>
-                    <% }); %> -->
+                    <% }); %>
             </div>
             </center>
     </div>
