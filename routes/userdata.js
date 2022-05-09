@@ -4,7 +4,8 @@ var router = express.Router();
 const User = require('../models/user');
 
 
-router.post("/", async function (req, res) {
+router.post("/",async function (req, res) {
+  console.log(req.isAuthenticated())
   if (!req.body.data.username) {
     res.status(404).send("username required.")
     return 0;
