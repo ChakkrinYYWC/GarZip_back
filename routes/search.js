@@ -5,8 +5,8 @@ const User = require('../models/user');
 const Book = require('../models/book')
 
 
-router.post("/:info", async function (req, res) {
-    const info = req.params.info
+router.post("/", async function (req, res) {
+    const info = req.body.info
     let found_book_name = await Book.aggregate([
         {
             $addFields: {
@@ -44,6 +44,7 @@ router.post("/:info", async function (req, res) {
         },
     ])
     const result = { found_book_name, fonud_book_auther }
+    console.log(result)
     if(result.found_book_name.length ==0 && result.fonud_book_auther.length == 0){
         res.status(200).send("Not found")
     }else{
