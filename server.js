@@ -1,4 +1,5 @@
 const express = require('express');
+const router = express.Router();
 const session = require('express-session');
 const MongoStore = require('connect-mongostore')(session);
 const passport = require('passport');
@@ -10,8 +11,8 @@ const cors = require("cors");
 const authroutes = require('./routes/authroutes.js'),
   books = require('./routes/books.js'),
   // Book = require('./models/book');
-  userdata = require('./routes/userdata')
-search = require('./routes/search')
+  userdata = require('./routes/userdata'),
+  search = require('./routes/search');
 dashboards = require('./routes/dashboards.js');
 const config = require('./config')
 const mongoose = require("mongoose"),
@@ -92,8 +93,7 @@ app.use('/auth', authroutes);
 app.use('/book', books);
 app.use('/user', userdata)
 app.use('/search', search)
-
-// app.use('/dashboard', dashboards);
+app.use('/', dashboards)
 
 
 const port = 3000;

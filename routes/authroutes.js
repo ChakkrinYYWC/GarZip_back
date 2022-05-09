@@ -12,7 +12,7 @@ const bcrypt = require("bcrypt");
 const mongoose = require('mongoose');
 const bcryptSalt = 10;
 router.get('/', function (req, res) {
-  res.render('pages/index.ejs'); // load the index.ejs file
+  // res.render('pages/index.ejs'); // load the index.ejs file
 });
 
 // router.get('/profile', isLoggedIn, function (req, res) {
