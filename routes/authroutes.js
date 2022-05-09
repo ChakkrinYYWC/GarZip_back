@@ -23,22 +23,60 @@ router.get('/', function (req, res) {
 
 //-----------------------------------//
 
-router.post('/login', passport.authenticate('local', { successFlash: 'Welcome!' }), async function (req, res) {
-  const user = await User.aggregate([
-    {
-      $match: {
-        username: req.body.username
-      }
-    },
-    {
-      $project: {
-        "salt": 0,
-        "hash": 0
-      }
+// router.post('/login', passport.authenticate('local', { successFlash: 'Welcome!' }), async function (req, res, next) {
+//   const user = await User.aggregate([
+//     {
+//       $match: {
+//         username: req.body.username
+//       }
+//     },
+//     {
+//       $project: {
+//         "salt": 0,
+//         "hash": 0
+//       }
+//     }
+//   ])
+//   res.status(200).send(user)
+// });
+
+router.post('/login', (req, res, next) => {
+  console.log('Inside POST /login callback')
+  passport.authenticate('local', async function(err, user, info){
+    if(err){
+      console.log(err)
     }
-  ])
-  res.status(200).send(user)
-});
+    console.log('Inside passport.authenticate() callback');
+    // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
+    // console.log(`req.user: ${JSON.stringify(req.user)}`)
+    req.login(user,async (err) => {
+      if (err) { return next(err); }
+      console.log(req.isAuthenticated())
+      console.log('Inside req.login() callback')
+      // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
+      // console.log(`req.user: ${JSON.stringify(req.user)}`)
+      const user = await User.aggregate([
+        {
+          $match: {
+            username: req.body.username
+          }
+        },
+        {
+          $project: {
+            "salt": 0,
+            "hash": 0,
+            "__v": 0
+          }
+        }
+      ])
+      // console.log(req.session)
+      return res.status(200).send(user)
+      // return res.redirect('localhost:8100/HOME');
+      // return res.redirect(200, '${CLIENT_URL}/HOME')
+      // return res.writeHead(200, {'Location': 'http://localhost:8100/' + 'HOME'});
+    })
+  })(req, res, next);
+})
 
 router.post("/register", function (req, res) {
   if (req.body.password != req.body.c_password) {
@@ -138,7 +176,7 @@ router.get('/error', isLoggedIn, function (req, res) {
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated())
     return next();
-  res.redirect('/');
+  else res.redirect('/login');
 }
 
 module.exports = router;
