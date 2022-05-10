@@ -1,498 +1,315 @@
 <!doctype html>
 <html>
-  <%- include("partials/sidebar.ejs") %>
+
 <head>
-  <!-- <title>Facebook Node Authentication</title> -->
-  <link rel='stylesheet' type='text/css' href='/index.css' />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!-- <link rel="stylesheet" type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css"> -->
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!----======== CSS ======== -->
-  <link rel="stylesheet" href="style.css">
-  
-  <!----===== Boxicons CSS ===== -->
-  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
-  
-  <title>Dashboard</title> 
-  
+    <title>LOGIN</title>
+    <link rel='stylesheet' type='text/css' href='/index.css' />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="style.css">
+    <!----===== Boxicons CSS ===== -->
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <title>Product Card Design</title>
+    <!----css custom file link-->
+    <link rel="stylesheet" href="style.css">
+    <!---Fontawesome CDN link----->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
   <style>
 
-    /* Google Font Import - Poppins */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Poppins', sans-serif;
-    }
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 
-    :root{
-        /* ===== Colors ===== */
-        --body-color: #E4E9F7;
-        --sidebar-color: #FFF;
-        --primary-color: #695CFE;
-        --primary-color-light: #F6F5FF;
-        --toggle-color: #DDD;
-        --text-color: #707070;
+body {
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+}
 
-        /* ====== Transition ====== */
-        --tran-03: all 0.2s ease;
-        --tran-03: all 0.3s ease;
-        --tran-04: all 0.3s ease;
-        --tran-05: all 0.3s ease;
-    }
+.wave {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  z-index: -1;
+}
 
-    body{
-        min-height: 100vh;
-        background-color: var(--body-color);
-        transition: var(--tran-05);
-    }
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 7rem;
+  padding: 0 2rem;
+}
 
-    ::selection{
-        background-color: var(--primary-color);
-        color: #fff;
-    }
+.img {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 
-    body.dark{
-        --body-color: #18191a;
-        --sidebar-color: #242526;
-        --primary-color: #3a3b3c;
-        --primary-color-light: #3a3b3c;
-        --toggle-color: #fff;
-        --text-color: #ccc;
-    }
+.login-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+}
 
-    /* ===== Sidebar ===== */
-    .sidebar{
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 250px;
-        padding: 10px 14px;
-        background: var(--sidebar-color);
-        transition: var(--tran-05);
-        z-index: 100;  
-    }
-    .sidebar.close{
-        width: 88px;
-    }
+.img img {
+  width: 500px;
+}
 
-    /* ===== Reusable code - Here ===== */
-    .sidebar li{
-        height: 50px;
-        list-style: none;
-        display: flex;
-        align-items: center;
-        margin-top: 10px;
-    }
+form {
+  width: 360px;
+}
 
-    .sidebar header .image,
-    .sidebar .icon{
-        min-width: 60px;
-        border-radius: 6px;
-    }
+.login-content img {
+  height: 100px;
+}
 
-    .sidebar .icon{
-        min-width: 60px;
-        border-radius: 6px;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-    }
+.login-content h2 {
+  margin: 15px 0;
+  color: #333;
+  text-transform: uppercase;
+  font-size: 2.9rem;
+}
 
-    .sidebar .text,
-    .sidebar .icon{
-        color: var(--text-color);
-        transition: var(--tran-03);
-    }
+.login-content .input-div {
+  position: relative;
+  display: grid;
+  grid-template-columns: 7% 93%;
+  margin: 25px 0;
+  padding: 5px 0;
+  border-bottom: 2px solid #d9d9d9;
+}
 
-    .sidebar .text{
-        font-size: 17px;
-        font-weight: 500;
-        white-space: nowrap;
-        opacity: 1;
-    }
-    .sidebar.close .text{
-        opacity: 0;
-    }
-    /* =========================== */
+.login-content .input-div.one {
+  margin-top: 0;
+}
 
-    .sidebar header{
-        position: relative;
-        margin-top: 20px;
-    }
+.i {
+  color: #d9d9d9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .sidebar header .image-text{
-        display: flex;
-        align-items: center;
-    }
-    .sidebar header .logo-text{
-        display: flex;
-        flex-direction: column;
-    }
-    header .image-text .name {
-        margin-top: 2px;
-        font-size: 22px;
-        font-weight: 600;
-    }
+.i i {
+  transition: 0.3s;
+}
 
-    header .image-text .profession{
-        font-size: 16px;
-        margin-top: -2px;
-        display: block;
-    }
+.input-div > div {
+  position: relative;
+  height: 45px;
+}
 
-    .sidebar header .image{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+.input-div > div > h5 {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 18px;
+  transition: 0.3s;
+}
 
-    .sidebar header .image img{
-        width: 40px;
-        border-radius: 6px;
-    }
+.input-div:before,
+.input-div:after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  width: 0%;
+  height: 2px;
+  background-color: #695CFE;
+  transition: 0.4s;
+}
 
-    .sidebar header .toggle{
-        position: absolute;
-        top: 50%;
-        right: -25px;
-        transform: translateY(-50%) rotate(180deg);
-        height: 25px;
-        width: 25px;
-        background-color: var(--primary-color);
-        color: var(--sidebar-color);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        cursor: pointer;
-        transition: var(--tran-05);
-    }
+.input-div:before {
+  right: 50%;
+}
 
-    body.dark .sidebar header .toggle{
-        color: var(--text-color);
-    }
+.input-div:after {
+  left: 50%;
+}
 
-    .sidebar.close .toggle{
-        transform: translateY(-50%) rotate(0deg);
-    }
+.input-div.focus:before,
+.input-div.focus:after {
+  width: 50%;
+}
 
-    .sidebar .menu{
-        margin-top: 40px;
-    }
+.input-div.focus > div > h5 {
+  top: -5px;
+  font-size: 15px;
+}
 
-    .sidebar li.search-box{
-        border-radius: 6px;
-        background-color: var(--primary-color-light);
-        cursor: pointer;
-        transition: var(--tran-05);
-    }
+.input-div.focus > .i > i {
+  color: #695CFE;
+}
 
-    .sidebar li.search-box input{
-        height: 100%;
-        width: 100%;
-        outline: none;
-        border: none;
-        background-color: var(--primary-color-light);
-        color: var(--text-color);
-        border-radius: 6px;
-        font-size: 17px;
-        font-weight: 500;
-        transition: var(--tran-05);
-    }
-    .sidebar li a{
-        list-style: none;
-        height: 100%;
-        background-color: transparent;
-        display: flex;
-        align-items: center;
-        height: 100%;
-        width: 100%;
-        border-radius: 6px;
-        text-decoration: none;
-        transition: var(--tran-03);
-    }
+.input-div > div > input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0.5rem 0.7rem;
+  font-size: 1.2rem;
+  color: #555;
+  font-family: "poppins", sans-serif;
+}
 
-    .sidebar li a:hover{
-        background-color: var(--primary-color);
-    }
-    .sidebar li a:hover .icon,
-    .sidebar li a:hover .text{
-        color: var(--sidebar-color);
-    }
-    body.dark .sidebar li a:hover .icon,
-    body.dark .sidebar li a:hover .text{
-        color: var(--text-color);
-    }
+.input-div.pass {
+  margin-bottom: 4px;
+}
 
-    .sidebar .menu-bar{
-        height: calc(100% - 55px);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        overflow-y: scroll;
-    }
-    .menu-bar::-webkit-scrollbar{
-        display: none;
-    }
-    .sidebar .menu-bar .mode{
-        border-radius: 6px;
-        background-color: var(--primary-color-light);
-        position: relative;
-        transition: var(--tran-05);
-    }
+a {
+  display: block;
+  text-align: right;
+  text-decoration: none;
+  color: #999;
+  font-size: 0.9rem;
+  transition: 0.3s;
+}
 
-    .menu-bar .mode .sun-moon{
-        height: 50px;
-        width: 60px;
-    }
+a:hover {
+  color: #695CFE;
+}
 
-    .mode .sun-moon i{
-        position: absolute;
-    }
-    .mode .sun-moon i.sun{
-        opacity: 0;
-    }
-    body.dark .mode .sun-moon i.sun{
-        opacity: 1;
-    }
-    body.dark .mode .sun-moon i.moon{
-        opacity: 0;
-    }
+.btn {
+  display: block;
+  width: 100%;
+  height: 50px;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  background-image: linear-gradient(to right, #695CFE, #8a81f8, #3424e6);
+  background-size: 200%;
+  font-size: 1.2rem;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  margin: 1rem 0;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.btn:hover {
+  background-position: right;
+}
 
-    .menu-bar .bottom-content .toggle-switch{
-        position: absolute;
-        right: 0;
-        height: 100%;
-        min-width: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-    .toggle-switch .switch{
-        position: relative;
-        height: 22px;
-        width: 40px;
-        border-radius: 25px;
-        background-color: var(--toggle-color);
-        transition: var(--tran-05);
-    }
+@media screen and (max-width: 1050px) {
+  .container {
+    grid-gap: 5rem;
+  }
+}
 
-    .switch::before{
-        content: '';
-        position: absolute;
-        height: 15px;
-        width: 15px;
-        border-radius: 50%;
-        top: 50%;
-        left: 5px;
-        transform: translateY(-50%);
-        background-color: var(--sidebar-color);
-        transition: var(--tran-04);
-    }
+@media screen and (max-width: 1000px) {
+  form {
+    width: 290px;
+  }
 
-    body.dark .switch::before{
-        left: 20px;
-    }
+  .login-content h2 {
+    font-size: 2.4rem;
+    margin: 8px 0;
+  }
 
-    .home{
-        position: absolute;
-        top: 0;
-        top: 0;
-        left: 250px;
-        height: 100vh;
-        width: calc(100% - 250px);
-        background-color: var(--body-color);
-        transition: var(--tran-05);
-        padding: 0px 100px;
-    }
-    .home .text{
-        font-size: 30px;
-        font-weight: 500;
-        color: var(--text-color);
-        padding: 50px 0px;
-    }
+  .img img {
+    width: 400px;
+  }
+}
 
-    .sidebar.close ~ .home{
-        left: 78px;
-        height: 100vh;
-        width: calc(100% - 78px);
-    }
-    body.dark .home .text{
-        color: var(--text-color);
-    }
-    .bottom-content{
-      margin-bottom: 50px;
-      
-    }
+@media screen and (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
 
+  .img {
+    display: none;
+  }
+
+  .wave {
+    display: none;
+  }
+
+  .login-content {
+    justify-content: center;
+  }
+}
   </style>
 </head>
 
 <body>
-    <!-- <%- include("partials/sidebar.ejs") %> -->
-  <!-- <nav class="sidebar close">
-    <header>
-        <div class="image-text">
-            <span class="image">
-                <img src="logo_garzip.jpeg" alt="logo">
-            </span>
-
-            <div class="text logo-text">
-                <span class="name">GARZIP</span>
-                <span class="profession">Management</span>
-            </div>
-        </div>
-
-        <i class='bx bx-chevron-right toggle'></i>
-    </header>
-
-    <div class="menu-bar">
-        <div class="menu">
-
-            <li class="search-box">
-                <i class='bx bx-search icon'></i>
-                <input type="text" placeholder="Search...">
-            </li>
-
-            <ul class="menu-links">
-                <li class="nav-link">
-                    <a href="#">
-                      <i class='bx bx-line-chart icon'></i>
-                      <span class="text nav-text">Dashboard</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="#">
-                        <i class='bx bx-user icon' ></i>
-                        <span class="text nav-text">User</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="/book">
-                        <i class='bx bx-add-to-queue icon' ></i>
-                        <span class="text nav-text">Create books</span>
-                    </a>
-                </li>
-
-                <li class="nav-link dropdown" >
-                  <a href="#" class="dropbtn">
-                      <i class='bx bx-add-to-queue icon' ></i>
-                      <span class="text nav-text">Category books</span>
-                  </a>
-               
-                </li>
-               
-
-               
-            </ul>
-        </div>
-
-        <div class="bottom-content">
-            <li class="">
-                <a href="#">
-                    <i class='bx bx-log-out icon' ></i>
-                    <span class="text nav-text">Logout</span>
-                </a>
-            </li>
-
-            <!-- <li class="mode">
-                <div class="sun-moon">
-                    <i class='bx bx-moon icon moon'></i>
-                    <i class='bx bx-sun icon sun'></i>
-                </div>
-                <span class="mode-text text">Dark mode</span>
-
-                <div class="toggle-switch">
-                    <span class="switch"></span>
-                </div>
-            </li> -->
-            
-        </div>
-    </div>
-
-</nav> -->
 
 <section class="home">
-    <div class="text">Dashboard</div>
-    <sidebar />
-</section>
-
-
-
-
-
-
-  <!-- <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo">Node Authentication</a>
-    </div>
-  </nav> -->
-  <!-- <div class="section no-pad-bot" id="index-banner">
+    
+    <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#695CFE" fill-opacity="1" d="M0,128L80,160C160,192,320,256,480,282.7C640,309,800,299,960,282.7C1120,267,1280,245,1360,234.7L1440,224L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>
+    
     <div class="container">
-      <br><br>
-      <div class="row center">
-        <div class="col s6 offset-s3">
-          <div class="card">
-            <div class="card-content">
-              <span class="card-title">Facebook Login using Node and passport</span>
+      <div class="img">
+        <img src="./assets/admin.png" alt="" />
+        <img src="https://svgshare.com/i/JcM.svg">
+      </div>
+      <div class="login-content">
+        <form action="index.html">
+          <img src="https://icon-library.com/images/admin-icon-png/admin-icon-png-12.jpg">
+          <h2 class="title">Welcome</h2>
+          <div class="input-div one">
+            <div class="i">
+              <i class="fas fa-user"></i>
             </div>
-            <div class="card-action">
-              <a href="/auth/facebook" class="waves-effect waves-light btn social facebook">
-                <i class="fa fa-facebook"></i> Sign in with facebook
-              </a>
+            <div class="div">
+              <h5>Username</h5>
+              <input type="text" class="input">
             </div>
           </div>
-        </div>
+          <div class="input-div pass">
+            <div class="i">
+              <i class="fas fa-lock"></i>
+            </div>
+            <div class="div">
+              <h5>Password</h5>
+              <input type="password" class="input">
+            </div>
+          </div>
+          <br> 
+            <input type="submit" class="btn" value="Login">
+
+        </form>
       </div>
     </div>
-  </div> -->
+</section>
 
+<script>
+  const inputs = document.querySelectorAll(".input");
 
-  <script>
-    const body = document.querySelector('body'),
-  sidebar = body.querySelector('nav'),
-  toggle = body.querySelector(".toggle"),
-  searchBtn = body.querySelector(".search-box"),
-  modeSwitch = body.querySelector(".toggle-switch"),
-  modeText = body.querySelector(".mode-text");
+    function addcl() {
+    let parent = this.parentNode.parentNode;
+    parent.classList.add("focus");
+    }
 
+    function remcl() {
+    let parent = this.parentNode.parentNode;
+    if (this.value == "") {
+        parent.classList.remove("focus");
+    }
+    }
 
-toggle.addEventListener("click" , () =>{
-sidebar.classList.toggle("close");
-})
-
-searchBtn.addEventListener("click" , () =>{
-sidebar.classList.remove("close");
-})
-
-modeSwitch.addEventListener("click" , () =>{
-body.classList.toggle("dark");
-
-if(body.classList.contains("dark")){
-    modeText.innerText = "Light mode";
-}else{
-    modeText.innerText = "Dark mode";
-    
-}
-});
+    inputs.forEach((input) => {
+    input.addEventListener("focus", addcl);
+    input.addEventListener("blur", remcl);
+    });  
 </script>
 
-  
-</body>
 
-</html>
+
+
+

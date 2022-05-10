@@ -1,1 +1,84 @@
-user
+<!doctype html>
+<html>
+    <%- include("../partials/sidebar.ejs") %>
+<head>
+  <title>User</title>
+  <link rel='stylesheet' type='text/css' href='/index.css' />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="style.css">
+    <!----===== Boxicons CSS ===== -->
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    .styled-table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 1000px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+    .styled-table thead tr {
+        background-color: #695CFE;
+        color: #ffffff;
+        text-align: left;
+    }
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+    }
+    .styled-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+    }
+
+    .styled-table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid #695CFE;
+    }
+    .styled-table tbody tr.active-row {
+        font-weight: bold;
+        color: #695CFE;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="home">
+    <div class="text">User</div>
+
+    <center>
+    <table class="styled-table">
+      <thead>
+          <tr>
+              <th>Name</th>
+              <th>Points</th>
+              <th>Points</th>
+              <th>Points</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>Dom</td>
+              <td>6000</td>
+              <td>6000</td>
+              <td>6000</td>
+          </tr>
+          <tr class="active-row">
+              <td>Melissa</td>
+              <td>5150</td>
+              <td>6000</td>
+              <td>6000</td>
+          </tr>
+          
+          
+      </tbody>
+    </table>
+  </center>
+</section>
