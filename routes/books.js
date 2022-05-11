@@ -2,6 +2,8 @@ const passport = require('passport'),
   express = require('express'),
   book = require('../models/book');
 moment = require("moment");
+const gTTS = require('gtts');
+const text2wav = require('text2wav')
 
 var router = express.Router();
 
@@ -16,29 +18,36 @@ router.get('/', (req, res) => {
   })
 })
 
-
 router.post('/', async (req, res) => {
-  // console.log(req.body)
+  // console.log(req.body.text)
+
+  var text = req.body.text
+  var gtts = new gTTS(text, 'th');
+  gtts.save('hello.mp3', function (err, result) {
+    if (err) { throw new Error(err) }
+    console.log('Success!');
+  });
+
   // console.log('category :: '+req.body.category)
-  var newRecord = new book({
-    book_id: req.body.book_id,
-    name: req.body.name,
-    auther: req.body.auther,
-    trailer: req.body.trailer,
-    text: req.body.text,
-    image: req.body.image,
-    category: req.body.category,
-    view : 0,
-  })
-  console.log(newRecord)
-  newRecord.save((err, docs) => {
-    if (!err) {
-      console.log("save successful");
-      // res.send(docs)
-      res.redirect('/book')
-    } else
-      console.log('Error #2 : ' + JSON.stringify(err, undefined, 2))
-  })
+  // var newRecord = new book({
+  //   book_id: req.body.book_id,
+  //   name: req.body.name,
+  //   auther: req.body.auther,
+  //   trailer: req.body.trailer,
+  //   text: req.body.text,
+  //   image: req.body.image,
+  //   category: req.body.category,
+  //   view : 0,
+  // })
+  // console.log(newRecord)
+  // newRecord.save((err, docs) => {
+  //   if (!err) {
+  //     console.log("save successful");
+  //     // res.send(docs)
+  //     res.redirect('/book')
+  //   } else
+  //     console.log('Error #2 : ' + JSON.stringify(err, undefined, 2))
+  // })
 })
 
 router.put('/:id', (req, res) => {
@@ -86,7 +95,7 @@ router.get('/app', (req, res) => {
 
 router.get('/app/:name', (req, res) => {
   // console.log(req.params.name)
-  book.find({category: req.params.name}, (err, docs) => {
+  book.find({ category: req.params.name }, (err, docs) => {
     if (!err) {
       // console.log(docs)
       res.send(docs)
@@ -99,22 +108,22 @@ router.get('/app/:name', (req, res) => {
 router.post("/catagory", async function (req, res) {
   const catagory = req.body.catagory
   let found_book = await book.aggregate([
-      {
-          $match: {
-            category: catagory
-          }
+    {
+      $match: {
+        category: catagory
       }
+    }
   ])
-  if(found_book.length == 0){
-      res.status(200).send("Not found")
-  }else{
-      res.status(200).send(found_book)
+  if (found_book.length == 0) {
+    res.status(200).send("Not found")
+  } else {
+    res.status(200).send(found_book)
   }
 })
 
 router.get('/app/detail/:id', (req, res) => {
   // console.log(req.params.id)
-  book.find({_id: req.params.id}, (err, docs) => {
+  book.find({ _id: req.params.id }, (err, docs) => {
     if (!err) {
       // console.log(docs)
       res.send(docs)

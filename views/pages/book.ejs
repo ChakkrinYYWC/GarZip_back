@@ -53,18 +53,20 @@
                                 <option>สืบสวน</option>
                                 <option>จิตวิทยา</option>
                             </select>
-
+                            <!-- <div class="form-group">
+                                <input type="file" class="form-control-file" id="filetest">
+                            </div> -->
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
 
                 </div>
                 <br><br>
-                <% books.sort((a, b) => (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
+                <% books.sort((a, b)=> (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
                     <div class="col-6 col-md-4">
                         <div class="card">
                             <!-- <button >edit</button> -->
-                            <img src= <%=data.image %> >
+                            <img src=<%=data.image %> >
                             <span class="title">name : <%= data.name %></span>
                             <span>book id : <%= data.book_id %></span>
                             <div>auther : <%= data.auther %>
@@ -80,10 +82,10 @@
                             <div>
                                 create_date : <%= moment(data.create_date).format('DD MMMM YYYY HH:mm:ss') %>
                             </div>
-     
-                          <div>
-                            <a href="<%= `/book/${data._id}?_method=DELETE` %>"
-                            onclick="confirm('ยืนยันลบหนังสือเสียง <%= data.name %> ?')">Delete</a>
+
+                            <div>
+                                <a href="<%= `/book/${data._id}?_method=DELETE` %>"
+                                    onclick="confirm('ยืนยันลบหนังสือเสียง <%= data.name %> ?')">Delete</a>
                             </div>
                         </div>
                     </div>
