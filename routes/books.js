@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   book.find((err, docs) => {
     if (!err) {
       // res.send(docs)
-      res.render('pages/book.ejs', { 'books': docs })
+      res.render('book.ejs', { 'books': docs })
     } else
       console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
   })
