@@ -2,44 +2,34 @@ const passport = require('passport'),
   express = require('express'),
   book = require('../models/book');
 moment = require("moment");
-const gTTS = require('gtts');
-const text2wav = require('text2wav')
 
 var router = express.Router();
-
 
 router.get('/', (req, res) => {
   book.find((err, docs) => {
     if (!err) {
-      // res.send(docs)
-      res.render('book.ejs', { 'books': docs })
+      // res.send(docs) 
+      res.render('book.ejs', { 'books': docs})
     } else
       console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
   })
 })
 
 router.post('/', async (req, res) => {
-  // console.log(req.body.text)
-
-  var text = req.body.text
-  var gtts = new gTTS(text, 'th');
-  gtts.save('hello.mp3', function (err, result) {
-    if (err) { throw new Error(err) }
-    console.log('Success!');
-  });
-
-  // console.log('category :: '+req.body.category)
-  // var newRecord = new book({
-  //   book_id: req.body.book_id,
-  //   name: req.body.name,
-  //   auther: req.body.auther,
-  //   trailer: req.body.trailer,
-  //   text: req.body.text,
-  //   image: req.body.image,
-  //   category: req.body.category,
-  //   view : 0,
-  // })
-  // console.log(newRecord)
+  console.log('#SAVE')
+  console.log(req.body.book_id)
+  console.log('category :: '+req.body.category)
+  var newRecord = new book({
+    book_id: req.body.book_id,
+    name: req.body.name,
+    auther: req.body.auther,
+    trailer: req.body.trailer,
+    text: req.body.text,
+    image: req.body.image,
+    category: req.body.category,
+    view : 0,
+  })
+  console.log(newRecord)
   // newRecord.save((err, docs) => {
   //   if (!err) {
   //     console.log("save successful");
@@ -50,8 +40,8 @@ router.post('/', async (req, res) => {
   // })
 })
 
-router.put('/:id', (req, res) => {
-
+router.get('/:id', (req, res) => {
+  console.log('#EDIT')
   var updatedRecord = {
     book_id: req.body.book_id,
     name: req.body.name,
@@ -62,24 +52,26 @@ router.put('/:id', (req, res) => {
     // view: req.body.view
   }
   console.log(updatedRecord)
-  book.findByIdAndUpdate(req.params.id, { $set: updatedRecord }, { new: true }, (err, docs) => {
-    if (!err) {
-      console.log("update successful");
-      res.send(docs)
-    } else
-      console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
-  })
+  // book.findByIdAndUpdate(req.params.id, { $set: updatedRecord }, { new: true }, (err, docs) => {
+  //   if (!err) {
+  //     console.log("update successful");
+  //     res.send(docs)
+  //   } else
+  //     console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
+  // })
 })
 
-router.delete('/:id', (req, res) => {
-  book.findByIdAndRemove(req.params.id, (err, docs) => {
-    if (!err) {
-      console.log("delete successful");
-      // res.send(docs)
-      res.redirect('/book')
-    } else
-      console.log('Error #4 : ' + JSON.stringify(err, undefined, 2))
-  })
+router.post('/:id', (req, res) => {
+  console.log(req.params.id)
+  console.log("#DELETE")
+  // book.findByIdAndRemove(req.params.id, (err, docs) => {
+  //   if (!err) {
+  //     console.log("delete successful");
+  //     // res.send(docs)
+  //     res.redirect('/book')
+  //   } else
+  //     console.log('Error #4 : ' + JSON.stringify(err, undefined, 2))
+  // })
 })
 
 

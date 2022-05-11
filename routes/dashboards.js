@@ -1,5 +1,6 @@
 const express = require('express');
 var router = express.Router();
+const book = require('../models/book');
 
 
 router.get('/', function (req, res) {
@@ -22,9 +23,18 @@ router.get('/createbook', function (req, res) {
     res.render('pages/createbook.ejs'); // load the index.ejs file
 });
 
-router.get('/catagorybook', function (req, res) {
-    res.render('pages/catagorybook.ejs'); // load the index.ejs file
-});
+// router.get('/catagorybook', function (req, res) {
+//     // res.render('pages/catagorybook.ejs'); // load the index.ejs file
+// });
+router.get('/catagorybook', (req, res) => {
+    book.find((err, docs) => {
+      if (!err) {
+        // res.send(docs) 
+        res.render('pages/catagorybook.ejs', { 'books': docs })
+      } else
+        console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
+    })
+  })
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())

@@ -98,37 +98,44 @@
                             </form>
 
                         </div>
-
-
-                        <!-- <br><br>
-                <% books.sort((a, b) => (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
-                    <div class="col-6 col-md-4">
-                        <div class="card">
-                            <button >edit</button>
-                            <img src= <%=data.image %> >
-                            <span class="title">name : <%= data.name %></span>
-                            <span>book id : <%= data.book_id %></span>
-                            <div>auther : <%= data.auther %>
+                        
+                        <br><br>
+                        <% books.sort((a, b)=> (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
+                            <div class="col-6 col-md-4">
+                                <div class="card">
+                                    <form method="GET" action="/book/<%=data._id%>" >
+                                        <button type="submit" class="btn" onclick="">
+                                            Edit
+                                        </button>
+                                    </form>
+                                    <img src=<%=data.image %> >
+                                    <span class="title">name : <%= data.name %></span>
+                                    <span>book id : <%= data.book_id %></span>
+                                    <div>auther : <%= data.auther %>
+                                    </div>
+                                    <div>text : <%= data.text %>
+                                    </div>
+                                    <div>trailer : <%= data.trailer %>
+                                    </div>
+                                    <div>view : <%= data.view %>
+                                    </div>
+                                    <div>category : <%= data.category %>
+                                    </div>
+                                    <div>
+                                        create_date : <%= moment(data.create_date).format('DD MMMM YYYY HH:mm:ss') %>
+                                    </div>
+                                    <form method="POST" action="/book/<%=data._id%>" class="form">
+                                        <button type="submit" class="btn" onclick="">
+                                            Delete
+                                        </button>
+                                    </form>
+                                    <!-- <div>
+                                        <a href="<%= `/book/${data._id}?_method=POST` %>"
+                                            onclick="confirm('ยืนยันลบหนังสือเสียง <%= data.name %> ?')">Delete</a>
+                                    </div> -->
+                                </div>
                             </div>
-                            <div>text : <%= data.text %>
-                            </div>
-                            <div>trailer : <%= data.trailer %>
-                            </div>
-                            <div>view : <%= data.view %>
-                            </div>
-                            <div>category : <%= data.category %>
-                            </div>
-                            <div>
-                                create_date : <%= moment(data.create_date).format('DD MMMM YYYY HH:mm:ss') %>
-                            </div>
-
-                            <div>
-                                <a href="<%= `/book/${data._id}?_method=DELETE` %>"
-                                    onclick="confirm('ยืนยันลบหนังสือเสียง <%= data.name %> ?')">Delete</a>
-                            </div>
-                        </div>
-                    </div>
-                    <% }); %> -->
+                            <% }); %>
                     </div>
                 </center>
             </div>
