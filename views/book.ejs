@@ -76,7 +76,7 @@
                                     <input class="form-control" name="name" placeholder="name" required>
                                     <input class="form-control" name="auther" placeholder="auther" required>
                                     <input class="form-control" name="trailer" placeholder="trailer">
-                                    <input class="form-control" name="text" placeholder="text">
+                                    <input class="form-control" name="text" placeholder="story">
                                     <input class="form-control" name="image" placeholder="url image" required>
                                     <label for="exampleFormControlSelect1">Category</label>
                                     <select class="form-control" id="exampleFormControlSelect1" name="category"
@@ -100,7 +100,7 @@
                         </div>
                         
                         <br><br>
-                        <% books.sort((a, b)=> (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
+                        <!--    <% books.sort((a, b)=> (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
                             <div class="col-6 col-md-4">
                                 <div class="card">
                                     <form method="GET" action="/book/<%=data._id%>" >
@@ -133,9 +133,10 @@
                                         <a href="<%= `/book/${data._id}?_method=POST` %>"
                                             onclick="confirm('ยืนยันลบหนังสือเสียง <%= data.name %> ?')">Delete</a>
                                     </div> -->
-                                </div>
+                                    
+                                <!-- </div>
                             </div>
-                            <% }); %>
+                            <% }); %> --> 
                     </div>
                 </center>
             </div>

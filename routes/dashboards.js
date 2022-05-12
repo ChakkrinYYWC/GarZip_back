@@ -15,8 +15,8 @@ router.get('/dashboard', function (req, res) {
     res.render('pages/dashboard.ejs'); // load the index.ejs file
 });
 
-router.get('/user', function (req, res) {
-    res.render('pages/user.ejs'); // load the index.ejs file
+router.get('/detail', function (req, res) {
+    res.render('pages/detail.ejs'); // load the index.ejs file
 });
 
 router.get('/createbook', function (req, res) {
