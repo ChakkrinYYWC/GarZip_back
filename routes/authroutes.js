@@ -46,11 +46,13 @@ router.post('/login', (req, res, next) => {
     if(err){
       console.log(err)
     }
+    console.log(req.session)
     console.log('Inside passport.authenticate() callback');
     // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
     // console.log(`req.user: ${JSON.stringify(req.user)}`)
     req.login(user,async (err) => {
       if (err) { return next(err); }
+      // console.log(req.session)
       console.log(req.isAuthenticated())
       console.log('Inside req.login() callback')
       // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
