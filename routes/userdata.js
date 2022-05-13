@@ -5,15 +5,16 @@ const User = require('../models/user');
 
 
 router.post("/",async function (req, res) {
+  // console.log(req.session)
   console.log(req.isAuthenticated())
-  if (!req.body.data.username) {
+  if (!req.body.username) {
     res.status(404).send("username required.")
     return 0;
   }
   const user = await User.aggregate([
     {
       $match: {
-        username: req.body.data.username
+        username: req.body.username
       }
     },
     {
