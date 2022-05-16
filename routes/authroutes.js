@@ -3,6 +3,7 @@ const express = require('express');
 var router = express.Router();
 const User = require('../models/user');
 const book = require('../models/book');
+const Chart = require('../models/chart');
 const dashboard = require('../models/dashboard');
 const JWT = require("jsonwebtoken");
 const Token = require("../models/token");
@@ -82,16 +83,27 @@ router.post('/login', (req, res, next) => {
 
 router.post("/register", function (req, res) {
   if (req.body.password != req.body.c_password) {
-    return res.Status(400).send("confirm password error")
+    return res.status(400).send("confirm password error")
   }
-  User.register(new User({ email: req.body.email, mode: req.body.mode, username: req.body.username }), req.body.password, function (error, user) {
+  User.register(new User({ email: req.body.email, mode: req.body.mode, username: req.body.username }), req.body.password,async function (error, user) {
     if (error) {
       console.log(error);
-      res.status(400).send("A user with the given username is already registered")
+      return res.status(400).send("A user with the given username is already registered")
+    }else{
+      const chartdata = await Chart.aggregate([
+        {
+          $match: {
+            name: 'select'
+          }
+        }
+      ])
+      const numregis = chartdata[0].register
+      const numberregister = numregis+1
+      await Chart.findOneAndUpdate({name:'select'}, {register: numberregister});
+      passport.authenticate('local', { successFlash: 'Welcome!' })(req, res, function () {
+        return res.status(201)
+      })
     }
-    passport.authenticate('local', { successFlash: 'Welcome!' })(req, res, function () {
-      res.sendStatus(201)
-    })
   })
 })
 
