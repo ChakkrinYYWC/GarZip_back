@@ -63,7 +63,9 @@ body {
 }
 
 .img img {
-  width: 500px;
+  width: 550px;
+  
+  margin: 100px;
 }
 
 form {
@@ -206,6 +208,8 @@ a:hover {
   background-position: right;
 }
 
+
+
 @media screen and (max-width: 1050px) {
   .container {
     grid-gap: 5rem;
@@ -255,12 +259,12 @@ a:hover {
     
     <div class="container">
       <div class="img">
-        <img src="./assets/admin.png" alt="" />
-        <img src="https://svgshare.com/i/JcM.svg">
+        <img src="./assets/administrator.png" alt="admin"/>
+        <!-- <img src="https://svgshare.com/i/JcM.svg"> -->
       </div>
       <div class="login-content">
-        <form action="index.html">
-          <img src="https://icon-library.com/images/admin-icon-png/admin-icon-png-12.jpg">
+        <form action="/login" method="POST">
+          <img src="./assets/GARZIPLOGO.png">
           <h2 class="title">Welcome</h2>
           <div class="input-div one">
             <div class="i">
@@ -268,7 +272,7 @@ a:hover {
             </div>
             <div class="div">
               <h5>Username</h5>
-              <input type="text" class="input">
+              <input type="text" class="input" name="username">
             </div>
           </div>
           <div class="input-div pass">
@@ -277,7 +281,7 @@ a:hover {
             </div>
             <div class="div">
               <h5>Password</h5>
-              <input type="password" class="input">
+              <input type="password" class="input" name="password">
             </div>
           </div>
           <br> 

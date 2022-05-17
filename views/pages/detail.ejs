@@ -47,104 +47,7 @@
                 background-color: #fef8f8;
             }
 
-            .cards {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 2rem;
-                margin: 4rem 5vw;
-                padding: 0;
-                list-style-type: none;
-            }
 
-            .card {
-                position: relative;
-                display: block;
-                height: 100%;  
-                border-radius: calc(var(--curve) * 1px);
-                overflow: hidden;
-                text-decoration: none;
-                width: 250px;
-                
-            }
-
-            .card__image {      
-                width: 250px;
-                height: 350px;
-            }
-
-            .card__overlay {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                z-index: 1;      
-                border-radius: calc(var(--curve) * 1px);    
-                background-color: var(--surface-color);      
-                transform: translateY(100%);
-                transition: .2s ease-in-out;
-            }
-
-            .card:hover .card__overlay {
-                transform: translateY(0);
-            }
-
-            .card__header {
-                position: relative;
-                /* display: flex; */
-                align-items: center;
-                gap: 2em;
-                padding: 0.2em;
-                border-radius: calc(var(--curve) * 1px) 0 0 0;    
-                background-color: var(--surface-color);
-                transform: translateY(-100%);
-                transition: .2s ease-in-out;
-            }
-
-            .card__arc {
-                width: 80px;
-                height: 80px;
-                position: absolute;
-                bottom: 100%;
-                right: 0;      
-                z-index: 1;
-            }
-
-            .card__arc path {
-                fill: var(--surface-color);
-                d: path("M 40 80 c 22 0 40 -22 40 -40 v 40 Z");
-            }       
-
-            .card:hover .card__header {
-                transform: translateY(0);
-            }
-
-            .card__thumb {
-                flex-shrink: 0;
-                width: 50px;
-                height: 50px;      
-                border-radius: 50%;      
-            }
-
-            .card__title {
-                font-size: 1em;
-                margin: 0.2em 0 0 0;
-                color: #6A515E;
-                font-family: 'Bai Jamjuree', sans-serif;
-                font-weight: bold;
-            }
-
-            .card__tagline {
-                display: block;
-                margin: 1em 0;
-                font-family: "MockFlowFont";  
-                font-size: .8em; 
-                color: #D7BDCA;  
-            }
-
-            .card__status {
-                font-size: .8em;
-                color: #D7BDCA;
-            }
 
             .button {
                 padding: 20px;
@@ -192,6 +95,25 @@
                 font-weight: bold;
                 font-family: 'Bai Jamjuree', sans-serif;
             }
+            .column {
+                float: left;
+                width: 50%;
+            }
+
+                /* Clear floats after the columns */
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+            .detail{
+                margin: 100px ;
+            }
+            .book_information{
+                padding: 20px;
+                text-align: left;
+                font-family: 'Bai Jamjuree', sans-serif;
+            }
         </style>
 
     </head>
@@ -214,45 +136,31 @@
                     <Button href="">ทั่วไป</Button>
                 </ButtonGroup>
             </div>
-            <div class="Category_name">นิยาย</div>
-            <div class="row center">
-            <% books.sort((a, b) => (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
-                <div class="col-6 col-md-3">
-                    <ul class="cards">
-                    <li>
-                    <a href="/detail" class="card">
-                        <i class="fa-solid fa-circle-trash"></i>
-                        <img   src="<%=data.image %>""  class="card__image" alt="" />
-                        <div class="card__overlay">
-                        <div class="card__header">
-                            <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
-                            
-                            <div class="card__header-text">
-                            <h3 class="card__title"> <%= data.name %></h3>            
-                            <span class="card__status"><%= data.book_id %></span>
-                            <span class="card__status"><%= data.auther %></span>
-                            <div class="card__status"><%= data.view %></div>
-                            </div>
-                        </div>
-                        
-                        <!-- <span onclick="ConfirmDelete()" class="button Delete">Delete</span> -->
-                      
-                        <span href="/detail" class="button Edit">More</span>
-                        
-                        
-                        <!-- <p >
-                            <a href="<%= `/book/${data._id}?_method=POST` %>"
-                                onclick="confirm('ยืนยันลบหนังสือเสียง <%= data.name %> ?')">Delete</a>
-                        </p> -->
-                        </div>
-                    </a>      
-                    </li>
-                
-                    </ul>
+            <div class="Category_name">ชื่อ: <%= data[0].name %></div>
+            <div class="row detail">
+                <div class="column">
+                    <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202007/508039/1000233717_front_XXL.jpg?imgname=%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%A5%E0%B8%B1%E0%B8%9A%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%84%E0%B8%99%E0%B8%AD%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B8%AB%E0%B8%99%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%B7%E0%B8%AD%E0%B9%80%E0%B8%97%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%88%E0%B8%B0%E0%B8%A3%E0%B8%B9%E0%B9%89" alt="admin"/>
+
                 </div>
-        
-              <% }); %>
+                <div class="column book_information">
+     
+                    <div>book id : <%= data[0]._id %></div><br>
+                    <div>auther : <%= data[0].auther %></div><br>
+                    <div>trailer : <%= data[0].trailer %></div><br>
+                    <div>เนื้อเรื่อง : <%= data[0].text %></div><br>
+                    <div>view : <%= data[0].view %></div><br>
+                    <div>create_date : <%= data[0].create_date %></div>
+                </div>
             </div>
+
+          
+            <span onclick="ConfirmDelete()" class="button Delete">Delete</span>
+            <span  onclick="" class="button Edit">Edit</span>
+
+
+                
+
+
         </div>
         </center>
     </div>
@@ -277,9 +185,9 @@
                 )
             }
         })
+
     }
         
-
        
 </script>
 

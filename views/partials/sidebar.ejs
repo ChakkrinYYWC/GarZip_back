@@ -156,8 +156,8 @@
         }
     
         .sidebar header .image img{
-            width: 40px;
-            border-radius: 6px;
+            width: 60px;
+            
         }
     
         .sidebar header .toggle{
@@ -342,6 +342,23 @@
         .nav-link{
             padding: 0px;
         }
+        .search li a {
+   
+            text-decoration: underline;
+            text-align: right;
+            font-size: 10px;
+            justify-content: right;
+            padding-right: 5px;
+            color: #695CFE;
+        }
+        .search li a:hover {
+            color: #868585;
+            background-color: var(--primary-color-light);
+
+        }
+ 
+  
+
       </style>
 </head>
 
@@ -351,7 +368,7 @@
     <header>
         <div class="image-text">
             <span class="image">
-                <img src="" alt="logo">
+                <img src="./assets/GARZIPLOGO.png" alt="" />
             </span>
 
             <div class="text logo-text">
@@ -365,11 +382,16 @@
 
     <div class="menu-bar">
         <div class="menu">
-
-            <li class="search-box">
-                <i class='bx bx-search icon'></i>
-                <input type="text" placeholder="Search...">
-            </li>
+            <span class="search">
+                <form action="/dashboardsearch" method="post">
+                    <li class="search-box">
+                        <i class='bx bx-search icon' ></i>
+                        <input type="text" placeholder="Search..." name="info">
+                        <button class="button-search">search</button>
+                    </li>
+                </form>
+            </span>
+           
 
             <ul class="menu-links">
                 <li class="nav-link">
@@ -379,12 +401,12 @@
                     </a>
                 </li>
 
-                <li class="nav-link">
+                <!-- <li class="nav-link">
                     <a href="/user">
                         <i class='bx bx-user icon' ></i>
                         <span class="text nav-text">User</span>
                     </a>
-                </li>
+                </li> -->
 
                 <li class="nav-link">
                     <a href="/book">
@@ -404,7 +426,7 @@
 
         <div class="bottom-content">
             <li class="">
-                <a href="#">
+                <a href="/logout">
                     <i class='bx bx-log-out icon' ></i>
                     <span class="text nav-text">Logout</span>
                 </a>

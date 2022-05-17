@@ -16,7 +16,8 @@ let userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Books"
     },
-    continue_book : Number
+    continue_book : Number,
+    permission : String
 });
 
 userSchema.plugin(passportLocalMongoose);
