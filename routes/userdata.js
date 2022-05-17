@@ -5,7 +5,7 @@ const User = require('../models/user');
 
 
 router.post("/",async function (req, res) {
-  // console.log(req.session)
+  console.log(req.session)
   console.log(req.isAuthenticated())
   if (!req.body.username) {
     res.status(404).send("username required.")
@@ -106,6 +106,7 @@ router.put("/all", async function (req, res) {
 })
 
 router.put("/password", async function (req, res) {
+  console.log(req.body.data)
   if (!req.body.data.id) {
     res.status(404).send("not enough data.")
     return 0;

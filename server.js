@@ -36,13 +36,15 @@ mongoose.connect('mongodb+srv://garzip:uR7lntmgguFvOFQ8@cluster0.ihy1b.mongodb.n
   });
 
 app.use(session({
+  key: 'session_cookie_name',
   secret: 'SECRET',
   saveUninitialized: true,
   resave: true,
+  secure: false,
   // using store session on MongoDB using express-session + connect
   store: MongoStore.create({
     mongoUrl: config.urlMongo
-})
+  })
 }));
 
 app.use(passport.initialize());

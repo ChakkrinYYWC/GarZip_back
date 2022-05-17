@@ -13,7 +13,9 @@ const bcrypt = require("bcrypt");
 const mongoose = require('mongoose');
 const bcryptSalt = 10;
 router.get('/', function (req, res) {
-  // res.render('pages/index.ejs'); // load the index.ejs file
+  console.log(req.session)
+  console.log(req.isAuthenticated())
+  return res.status(200)
 });
 
 // router.get('/profile', isLoggedIn, function (req, res) {
@@ -42,20 +44,20 @@ router.get('/', function (req, res) {
 // });
 
 router.post('/login', (req, res, next) => {
-  console.log('Inside POST /login callback')
+  // console.log('Inside POST /login callback')
   passport.authenticate('local', async function(err, user, info){
     if(err){
       console.log(err)
     }
-    console.log(req.session)
-    console.log('Inside passport.authenticate() callback');
+    // console.log(req.session)
+    // console.log('Inside passport.authenticate() callback');
     // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
     // console.log(`req.user: ${JSON.stringify(req.user)}`)
     req.login(user,async (err) => {
       if (err) { return next(err); }
-      // console.log(req.session)
+      console.log(req.session)
       console.log(req.isAuthenticated())
-      console.log('Inside req.login() callback')
+      // console.log('Inside req.login() callback')
       // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
       // console.log(`req.user: ${JSON.stringify(req.user)}`)
       const user = await User.aggregate([
@@ -72,12 +74,13 @@ router.post('/login', (req, res, next) => {
           }
         }
       ])
-      // console.log(req.session)
+      console.log(req.isAuthenticated())
       return res.status(200).send(user)
       // return res.redirect('localhost:8100/HOME');
       // return res.redirect(200, '${CLIENT_URL}/HOME')
       // return res.writeHead(200, {'Location': 'http://localhost:8100/' + 'HOME'});
     })
+    console.log(req.isAuthenticated())
   })(req, res, next);
 })
 
@@ -101,7 +104,7 @@ router.post("/register", function (req, res) {
       const numberregister = numregis+1
       await Chart.findOneAndUpdate({name:'select'}, {register: numberregister});
       passport.authenticate('local', { successFlash: 'Welcome!' })(req, res, function () {
-        return res.status(201)
+        return res.status(201).send("user regist successfully.")
       })
     }
   })
