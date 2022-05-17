@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
   book.find((err, docs) => {
     if (!err) {
       // res.send(docs) 
-      res.render('book.ejs', { 'books': docs})
+      res.render('book.ejs', { 'books': docs })
     } else
       console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
   })
@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
   console.log('#SAVE')
   console.log(req.body.book_id)
-  console.log('category :: '+req.body.category)
+  console.log('category :: ' + req.body.category)
   var newRecord = new book({
     book_id: req.body.book_id,
     name: req.body.name,
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     text: req.body.text,
     image: req.body.image,
     category: req.body.category,
-    view : 0,
+    view: 0,
   })
   console.log(newRecord)
   // newRecord.save((err, docs) => {
@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
   // })
 })
 
-router.get('/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   console.log('#EDIT')
   var updatedRecord = {
     book_id: req.body.book_id,
@@ -78,6 +78,7 @@ router.post('/:id', (req, res) => {
 // ----------------- App ----------------
 router.get('/app', (req, res) => {
   book.find((err, docs) => {
+    // date_now = now.toISOString().replace(/T/, ' ').toString();
     if (!err) {
       res.send(docs)
     } else
