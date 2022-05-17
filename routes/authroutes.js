@@ -3,6 +3,7 @@ const express = require('express');
 var router = express.Router();
 const User = require('../models/user');
 const book = require('../models/book');
+const Chart = require('../models/chart');
 const dashboard = require('../models/dashboard');
 const JWT = require("jsonwebtoken");
 const Token = require("../models/token");
@@ -12,7 +13,9 @@ const bcrypt = require("bcrypt");
 const mongoose = require('mongoose');
 const bcryptSalt = 10;
 router.get('/', function (req, res) {
-  // res.render('pages/index.ejs'); // load the index.ejs file
+  console.log(req.session)
+  console.log(req.isAuthenticated())
+  return res.status(200)
 });
 
 // router.get('/profile', isLoggedIn, function (req, res) {
@@ -41,18 +44,20 @@ router.get('/', function (req, res) {
 // });
 
 router.post('/login', (req, res, next) => {
-  console.log('Inside POST /login callback')
+  // console.log('Inside POST /login callback')
   passport.authenticate('local', async function(err, user, info){
     if(err){
       console.log(err)
     }
-    console.log('Inside passport.authenticate() callback');
+    // console.log(req.session)
+    // console.log('Inside passport.authenticate() callback');
     // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
     // console.log(`req.user: ${JSON.stringify(req.user)}`)
     req.login(user,async (err) => {
       if (err) { return next(err); }
+      console.log(req.session)
       console.log(req.isAuthenticated())
-      console.log('Inside req.login() callback')
+      // console.log('Inside req.login() callback')
       // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
       // console.log(`req.user: ${JSON.stringify(req.user)}`)
       const user = await User.aggregate([
@@ -69,27 +74,39 @@ router.post('/login', (req, res, next) => {
           }
         }
       ])
-      // console.log(req.session)
+      console.log(req.isAuthenticated())
       return res.status(200).send(user)
       // return res.redirect('localhost:8100/HOME');
       // return res.redirect(200, '${CLIENT_URL}/HOME')
       // return res.writeHead(200, {'Location': 'http://localhost:8100/' + 'HOME'});
     })
+    console.log(req.isAuthenticated())
   })(req, res, next);
 })
 
 router.post("/register", function (req, res) {
   if (req.body.password != req.body.c_password) {
-    return res.Status(400).send("confirm password error")
+    return res.status(400).send("confirm password error")
   }
-  User.register(new User({ email: req.body.email, mode: req.body.mode, username: req.body.username }), req.body.password, function (error, user) {
+  User.register(new User({ email: req.body.email, mode: req.body.mode, username: req.body.username }), req.body.password,async function (error, user) {
     if (error) {
       console.log(error);
-      res.status(400).send("A user with the given username is already registered")
+      return res.status(400).send("A user with the given username is already registered")
+    }else{
+      const chartdata = await Chart.aggregate([
+        {
+          $match: {
+            name: 'select'
+          }
+        }
+      ])
+      const numregis = chartdata[0].register
+      const numberregister = numregis+1
+      await Chart.findOneAndUpdate({name:'select'}, {register: numberregister});
+      passport.authenticate('local', { successFlash: 'Welcome!' })(req, res, function () {
+        return res.status(201).send("user regist successfully.")
+      })
     }
-    passport.authenticate('local', { successFlash: 'Welcome!' })(req, res, function () {
-      res.sendStatus(201)
-    })
   })
 })
 

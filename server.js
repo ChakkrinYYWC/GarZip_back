@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const session = require('express-session');
-const MongoStore = require('connect-mongostore')(session);
+const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const passportlocal = require('passport-local')
 const LocalStrategy = require('passport-local').Strategy;
@@ -35,6 +35,21 @@ mongoose.connect('mongodb+srv://garzip:uR7lntmgguFvOFQ8@cluster0.ihy1b.mongodb.n
       console.log('Error while connecting MongoDB : ' + JSON.stringify(err, undefined, 2))
   });
 
+app.use(session({
+  key: 'session_cookie_name',
+  secret: 'SECRET',
+  saveUninitialized: true,
+  resave: true,
+  secure: false,
+  // using store session on MongoDB using express-session + connect
+  store: MongoStore.create({
+    mongoUrl: config.urlMongo
+  })
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 passport.use(new FacebookStrategy({
   clientID: config.facebookAuth.clientID,
   clientSecret: config.facebookAuth.clientSecret,
@@ -44,19 +59,19 @@ passport.use(new FacebookStrategy({
 }
 ));
 
-passport.use(new LocalStrategy({ usernameField: 'email' },
-  (email, password, done) => {
-    console.log('Inside local strategy callback')
-    // here is where you make a call to the database
-    // to find the user based on their username or email address
-    // for now, we'll just pretend we found that it was users[0]
-    const user = users[0]
-    if (email === user.email && password === user.password) {
-      console.log('Local strategy returned true')
-      return done(null, user)
-    }
-  }
-));
+// passport.use(new LocalStrategy({ usernameField: 'email' },
+//   (email, password, done) => {
+//     console.log('Inside local strategy callback')
+//     // here is where you make a call to the database
+//     // to find the user based on their username or email address
+//     // for now, we'll just pretend we found that it was users[0]
+//     const user = users[0]
+//     if (email === user.email && password === user.password) {
+//       console.log('Local strategy returned true')
+//       return done(null, user)
+//     }
+//   }
+// ));
 
 passport.use(new LocalStrategy(
   function (username, password, done) {
@@ -74,17 +89,6 @@ passport.serializeUser(function (user, cb) {
 passport.deserializeUser(function (obj, cb) {
   cb(null, obj);
 });
-
-app.use(session({
-  secret: 'SECRET',
-  saveUninitialized: true,
-  resave: true,
-  // using store session on MongoDB using express-session + connect
-  // store: new MongoStore({'db': 'sessions'})
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(cors());
 

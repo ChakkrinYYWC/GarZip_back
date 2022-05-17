@@ -383,11 +383,13 @@
     <div class="menu-bar">
         <div class="menu">
             <span class="search">
-                <li class="search-box">
-                    <i class='bx bx-search icon' ></i>
-                    <input type="text" placeholder="Search...">
-                    <a href="/search" class="button-search">search</a>
-                </li>
+                <form action="/dashboardsearch" method="post">
+                    <li class="search-box">
+                        <i class='bx bx-search icon' ></i>
+                        <input type="text" placeholder="Search..." name="info">
+                        <button class="button-search">search</button>
+                    </li>
+                </form>
             </span>
            
 
@@ -424,7 +426,7 @@
 
         <div class="bottom-content">
             <li class="">
-                <a href="#">
+                <a href="/logout">
                     <i class='bx bx-log-out icon' ></i>
                     <span class="text nav-text">Logout</span>
                 </a>
