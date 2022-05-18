@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
   // })
 })
 
-router.get('/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   console.log('#EDIT')
   var updatedRecord = {
     book_id: req.body.book_id,
