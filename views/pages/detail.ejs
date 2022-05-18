@@ -139,17 +139,18 @@
             <div class="Category_name">ชื่อ: <%= data[0].name %></div>
             <div class="row detail">
                 <div class="column">
-                    <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202007/508039/1000233717_front_XXL.jpg?imgname=%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%A5%E0%B8%B1%E0%B8%9A%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%84%E0%B8%99%E0%B8%AD%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B8%AB%E0%B8%99%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%B7%E0%B8%AD%E0%B9%80%E0%B8%97%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%88%E0%B8%B0%E0%B8%A3%E0%B8%B9%E0%B9%89" alt="admin"/>
+                    <img src="<%= data[0].image %>" alt="admin"/>
 
                 </div>
                 <div class="column book_information">
      
-                    <div>book id : <%= data[0]._id %></div><br>
-                    <div>auther : <%= data[0].auther %></div><br>
-                    <div>trailer : <%= data[0].trailer %></div><br>
-                    <div>เนื้อเรื่อง : <%= data[0].text %></div><br>
-                    <div>view : <%= data[0].view %></div><br>
-                    <div>create_date : <%= data[0].create_date %></div>
+                    <div>Book id : <%= data[0]._id %></div><br>
+                    <div>Auther : <%= data[0].auther %></div><br>
+                    <div>Category : <%= data[0].category %></div><br>
+                    <div>Trailer : <%= data[0].trailer %></div><br>
+                    <div>Story : <%= data[0].text %></div><br>
+                    <div>View : <%= data[0].view %></div><br>
+                    <div>Create_date : <%= data[0].create_date %></div>
                 </div>
             </div>
 
