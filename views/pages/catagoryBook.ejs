@@ -222,7 +222,7 @@
                     <li>
                     <a href="/detail" class="card">
                         <i class="fa-solid fa-circle-trash"></i>
-                        <img   src="<%=data.image %>""  class="card__image" alt="" />
+                        <img   src="<%=data.image %>"  class="card__image" alt="" />
                         <div class="card__overlay">
                         <div class="card__header">
                             <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>                     
@@ -237,7 +237,10 @@
                         
                         <!-- <span onclick="ConfirmDelete()" class="button Delete">Delete</span> -->
                       
-                        <span href="/detail" class="button Edit">More</span>
+                        <form action="/detail" method="post">
+                            <input type="hidden" name="info" value= <%= data._id %> />
+                            <button type="submit">More</button>
+                        </form>
                         
                         
                         <!-- <p >

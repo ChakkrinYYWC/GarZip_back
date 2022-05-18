@@ -18,11 +18,11 @@ router.get('/', function (req, res) {
   return res.status(200)
 });
 
-// router.get('/profile', isLoggedIn, function (req, res) {
-//   res.render('pages/profile.ejs', {
-//     user: req.user // get the user out of session and pass to template
-//   });
-// });
+router.get('/profile', isLoggedIn, function (req, res) {
+  res.render('pages/profile.ejs', {
+    user: req.user // get the user out of session and pass to template
+  });
+});
 
 //-----------------------------------//
 
