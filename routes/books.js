@@ -80,7 +80,6 @@ router.get('/app', (req, res) => {
   var datenow = new Date();
   // today = datenow.toISOString().replace(/T/, ' ').toString();
   // b = date_now.split(' ');
-  
   book.find((err, docs) => {    
     if (!err) {
       // console.log(docs)
