@@ -2,7 +2,10 @@ const   mongoose = require('mongoose'),
         passportLocalMongoose = require('passport-local-mongoose');
 
 let BookSchema = new mongoose.Schema({
-    book_id : String,
+    book_id : {
+        type: String,
+        unique: true
+    },
     name : String,
     auther : String,
     trailer : String,
