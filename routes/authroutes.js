@@ -13,8 +13,8 @@ const bcrypt = require("bcrypt");
 const mongoose = require('mongoose');
 const bcryptSalt = 10;
 router.get('/', function (req, res) {
-  console.log(req.session)
-  console.log(req.isAuthenticated())
+  // console.log(req.session)
+  // console.log(req.isAuthenticated())
   return res.status(200)
 });
 
@@ -55,8 +55,8 @@ router.post('/login', (req, res, next) => {
     // console.log(`req.user: ${JSON.stringify(req.user)}`)
     req.login(user,async (err) => {
       if (err) { return next(err); }
-      console.log(req.session)
-      console.log(req.isAuthenticated())
+      // console.log(req.session)
+      // console.log(req.isAuthenticated())
       // console.log('Inside req.login() callback')
       // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
       // console.log(`req.user: ${JSON.stringify(req.user)}`)
@@ -74,13 +74,13 @@ router.post('/login', (req, res, next) => {
           }
         }
       ])
-      console.log(req.isAuthenticated())
+      // console.log(req.isAuthenticated())
       return res.status(200).send(user)
       // return res.redirect('localhost:8100/HOME');
       // return res.redirect(200, '${CLIENT_URL}/HOME')
       // return res.writeHead(200, {'Location': 'http://localhost:8100/' + 'HOME'});
     })
-    console.log(req.isAuthenticated())
+    // console.log(req.isAuthenticated())
   })(req, res, next);
 })
 
@@ -159,7 +159,7 @@ router.get('/confirmresetpassword/:token/:id', function (req, res) {
 //-----------------------------------//
 
 router.post('/passwordReset/:token/:id', async function (req, res) {
-  console.log(req.params.token)
+  // console.log(req.params.token)
   if (req.body.password !== req.body.c_password) {
     res.send("Your repeat password was incorrect. Please try again").status(400)
   } else {

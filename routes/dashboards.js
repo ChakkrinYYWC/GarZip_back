@@ -7,7 +7,7 @@ const Chart = require('../models/chart');
 const mongoose = require("mongoose");
 
 router.get('/', function (req, res) {
-    console.log(req.session)
+    // console.log(req.session)
     res.render('pages/login.ejs'); // load the index.ejs file
 });
 
