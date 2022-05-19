@@ -2,11 +2,12 @@ const passport = require('passport');
 const express = require('express');
 var router = express.Router();
 const User = require('../models/user');
+const { default: mongoose } = require('mongoose');
 
 
-router.post("/",async function (req, res) {
-  console.log(req.session)
-  console.log(req.isAuthenticated())
+router.post("/", async function (req, res) {
+  // console.log(req.session)
+  // console.log(req.isAuthenticated())
   if (!req.body.username) {
     res.status(404).send("username required.")
     return 0;
@@ -24,9 +25,9 @@ router.post("/",async function (req, res) {
       }
     }
   ])
-  if(user[0] == undefined){
+  if (user[0] == undefined) {
     res.status(404).send("user doesn't exist.")
-  }else{
+  } else {
     res.status(200).send(user)
   }
 })
@@ -74,14 +75,14 @@ router.put("/email", async function (req, res) {
 })
 
 router.put("/all", async function (req, res) {
-  console.log(req.body.data)
+  // console.log(req.body.data)
   if (!req.body.data.id) {
-    console.log("fail")
+    // console.log("fail")
     res.status(404).send("user id required.")
     return 0;
   }
 
-  if(req.body.data.username !== ''){
+  if (req.body.data.username !== '') {
     await User.updateOne(
       { _id: req.body.data.id },
       { $set: { username: req.body.data.username } },
@@ -92,7 +93,7 @@ router.put("/all", async function (req, res) {
     });
   }
 
-  if(req.body.data.email !== ''){
+  if (req.body.data.email !== '') {
     await User.updateOne(
       { _id: req.body.data.id },
       { $set: { email: req.body.data.email } },
@@ -106,7 +107,7 @@ router.put("/all", async function (req, res) {
 })
 
 router.put("/password", async function (req, res) {
-  console.log(req.body.data)
+  // console.log(req.body.data)
   if (!req.body.data.id) {
     res.status(404).send("not enough data.")
     return 0;
@@ -136,6 +137,25 @@ router.put("/password", async function (req, res) {
     res.sendStatus(200)
   });
 })
+
+router.post('/changemode', async function (req, res) {
+  // console.log(req.body.mode)
+  var myboolean = new Boolean()
+  if (req.body.mode === 'true') {
+    myboolean = false
+  } else {
+    myboolean = true
+  }
+  await User.updateOne(
+    { _id: req.body.id },
+    { $set: { mode: myboolean } },
+  ).then(
+    res.send(myboolean)
+  ).catch((err) => {
+    console.log('Error: ' + err);
+    res.status(404).send("Error, please try again later.")
+  });
+});
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated())
