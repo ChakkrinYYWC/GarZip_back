@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
   book.find((err, docs) => {
     if (!err) {
       // res.send(docs) 
-      res.render('book.ejs', { 'books': docs})
+      res.render('book.ejs', { 'books': docs })
     } else
       console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
   })
@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
   console.log('#SAVE')
   console.log(req.body.book_id)
-  console.log('category :: '+req.body.category)
+  console.log('category :: ' + req.body.category)
   var newRecord = new book({
     book_id: req.body.book_id,
     name: req.body.name,
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     text: req.body.text,
     image: req.body.image,
     category: req.body.category,
-    view : 0,
+    view: 0,
   })
   console.log(newRecord)
   // newRecord.save((err, docs) => {
@@ -77,8 +77,31 @@ router.post('/:id', (req, res) => {
 
 // ----------------- App ----------------
 router.get('/app', (req, res) => {
-  book.find((err, docs) => {
+  var datenow = new Date();
+  // today = datenow.toISOString().replace(/T/, ' ').toString();
+  // b = date_now.split(' ');
+  
+  book.find((err, docs) => {    
     if (!err) {
+      // console.log(docs)
+      // for (let i = 0; i < docs.length; i++) {
+      //   date_book = docs[i].create_date.toISOString().replace(/T/, ' ')
+      //   a = date_book.split(' ');
+      //   console.log(a)
+      // }
+      // console.log(b[0])
+      res.send(docs)
+    } else
+      console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
+  })
+})
+
+router.get('/app/newbook', (req, res) => {
+  book.find((err, docs) => {
+
+    if (!err) {
+      console.log(docs.length)
+
       res.send(docs)
     } else
       console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))

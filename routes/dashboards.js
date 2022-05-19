@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
 router.get('/dashboardsearch', isLoggedIn, function (req, res) {
     res.render('pages/search.ejs'); // load the index.ejs file
 });
-router.post("/dashboardsearch",isLoggedIn , async function (req, res) {
+router.post("/dashboardsearch", isLoggedIn, async function (req, res) {
     const info = req.body.info
     let found_book_name = await book.aggregate([
         {
@@ -56,7 +56,7 @@ router.post("/dashboardsearch",isLoggedIn , async function (req, res) {
     return res.render("pages/search.ejs", { data: result, searchtext: req.body.info })
 })
 
-router.get('/dashboard', isLoggedIn,async function (req, res) {
+router.get('/dashboard', isLoggedIn, async function (req, res) {
     const playandregist = await Chart.aggregate([
         {
             $match: {
@@ -78,10 +78,10 @@ router.get('/dashboard', isLoggedIn,async function (req, res) {
             }
         },
     ])
-    res.render('pages/dashboard.ejs',{playandregist: playandregist, normaluser: normaluser.length, blinduser: blinduser.length});
+    res.render('pages/dashboard.ejs', { playandregist: playandregist, normaluser: normaluser.length, blinduser: blinduser.length });
 });
 
-router.post('/dashboard', isLoggedIn,async function (req, res) {
+router.post('/dashboard', isLoggedIn, async function (req, res) {
     const playandregist = await Chart.aggregate([
         {
             $match: {
@@ -107,7 +107,7 @@ router.post('/dashboard', isLoggedIn,async function (req, res) {
     return res.status(200).send(data)
 });
 
-router.post('/detail',isLoggedIn, async function (req, res) {
+router.post('/detail', isLoggedIn, async function (req, res) {
     let found_book_id = await book.aggregate([
         {
             $match: {
@@ -122,11 +122,23 @@ router.get('/createbook', isLoggedIn, function (req, res) {
     res.render('pages/createbook.ejs');
 });
 
-router.get('/catagorybook',isLoggedIn, (req, res) => {
+router.get('/catagorybook', isLoggedIn, (req, res) => {
     book.find((err, docs) => {
         if (!err) {
             // res.send(docs) 
-            res.render('pages/catagorybook.ejs', { 'books': docs })
+            res.render('pages/catagorybook.ejs', { 'books': docs , 'title': 'ทั้งหมด'})
+        } else
+            console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
+    })
+})
+
+router.get('/catagorybook/:name', isLoggedIn, (req, res) => {
+    // console.log(req.params.name)
+    book.find({ category: req.params.name }, (err, docs) => {
+        if (!err) {
+            // res.send(docs)
+            console.log(docs) 
+            res.render('pages/catagorybook.ejs', { 'books': docs, 'title': req.params.name })
         } else
             console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
     })
@@ -150,7 +162,7 @@ router.get('/logout', async (req, res, next) => {
     return res.redirect('/');
 });
 
-router.get('/playcount',async function (req, res) {
+router.get('/playcount', async function (req, res) {
     const chartdata = await Chart.aggregate([
         {
             $match: {
