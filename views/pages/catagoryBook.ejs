@@ -192,6 +192,17 @@
                 font-weight: bold;
                 font-family: 'Bai Jamjuree', sans-serif;
             }
+            .search-box .button-search {
+                margin: 5px;
+                padding: 5px 10px;
+                border-radius: 20px;
+                color: #8708ef;
+                background-color: #ffffff;
+                border-color: #e1e1e1;
+                font-size: 10px;
+                font-family: 'Bai Jamjuree', sans-serif;
+                font-weight: bold;
+            }
         </style>
 
     </head>
@@ -202,6 +213,7 @@
         <div class="container">
             <h1 class="namepage">Category Books</h1>
             <center>
+
             <div class="btcate">
                 <ButtonGroup variant="text" aria-label="text primary button group">
                     <Button href="">นิยาย</Button>
@@ -215,6 +227,7 @@
                 </ButtonGroup>
             </div>
             <div class="Category_name">นิยาย</div>
+            <div >all 48 books</div>
             <div class="row center">
             <% books.sort((a, b) => (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
                 <div class="col-6 col-md-3">
