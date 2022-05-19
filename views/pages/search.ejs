@@ -190,13 +190,19 @@
 
         }
 
-        .Category_name {
+        /* .Category_name {
             margin-top: 50px;
             font-size: 30px;
 
             color: #707070;
             font-weight: bold;
             font-family: 'Bai Jamjuree', sans-serif;
+        } */
+        .namepage {
+        font-family: 'Poppins', sans-serif;
+        color: #707070;
+        padding: 30px;
+        text-align: center;
         }
     </style>
 
@@ -209,9 +215,9 @@
 
                 <center>
 
-                    <div class="Category_name">
+                    <h1 class="namepage">
                         Search : <%= searchtext %>
-                    </div>
+                    </h1>
                     <div >all 48 books</div>
                     <div class="row center">
                         <% data.found_book_name.forEach(function(book){ %>
