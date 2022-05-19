@@ -16,31 +16,55 @@
     <!----===== Boxicons CSS ===== -->
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <style>
-
+      /* Button {
+          margin: 5px;
+          padding: 5px 10px;
+          border-radius: 20px;
+          color: #504f4f;
+          background-color: #ffffff;
+          border-color: #e1e1e1;
+          font-weight: bold;
+          font-family: 'Bai Jamjuree', sans-serif;
+      } */
+      .namepage {
+          font-family: 'Poppins', sans-serif;
+          color: #707070;
+          padding: 30px;
+          text-align: center;
+      }
+      .dashboard{
+        margin: 50px 100px;
+      }
 
     </style>
   </head>
 
   <body>
-    <h1 class="namepage">Dashboard</h1>
-    <canvas id="myChart" style="width:100%;max-width:1000px;margin-left: 10%;"></canvas>
-    <script>
-      var xValues = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      var yValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-      var barColors = ["rgb(255,0,0)", "rgb(255,127,0)", "rgb(255,255,0)", "rgb(127,255,0)", "rgb(0,255,0)", "rgb(0,255,127)", "rgb(0,255,255)", "rgb(0,127,255)", "rgb(0,0,255)", "rgb(127,0,255)", "rgb(255,0,255)", "rgb(255,0,0)"];
-      
-      new Chart("myChart", {
-        type: "bar",
-        data: {
-          labels: xValues,
-          datasets: [{
-            backgroundColor: barColors,
-            data: yValues
-          }]
-        },
-      });
-    </script>
+    <div class="section no-pad-bot Category" id="index-banner">
+      <div class="container">
+        <h1 class="namepage">Dashboard</h1>
+        <div class="dashboard">
+          <canvas id="myChart" style="width:100%;max-width:1000px;margin-left: 10%;"></canvas>
+          <script>
+            var xValues = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var yValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            var barColors = ["rgb(255,0,0)", "rgb(255,127,0)", "rgb(255,255,0)", "rgb(127,255,0)", "rgb(0,255,0)", "rgb(0,255,127)", "rgb(0,255,255)", "rgb(0,127,255)", "rgb(0,0,255)", "rgb(127,0,255)", "rgb(255,0,255)", "rgb(255,0,0)"];
+  
+            new Chart("myChart", {
+              type: "bar",
+              data: {
+                labels: xValues,
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+                }]
+              },
+            });
+          </script>
+        </div>
 
+      </div> 
+    </div>
   </body>
 
 </html>

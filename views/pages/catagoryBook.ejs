@@ -153,35 +153,31 @@
 
             text-decoration: underline;
         }
-
         .Delete {
             color: red;
         }
-
         ul {
             padding-left: 0px;
         }
-
         .nav-link {
             padding: 0px;
         }
-
         Button {
-            margin: 5px;
-            padding: 5px 10px;
-            border-radius: 20px;
-            color: #504f4f;
-            background-color: #ffffff;
-            border-color: #e1e1e1;
-            font-weight: bold;
-            font-family: 'Bai Jamjuree', sans-serif;
-        }
+                margin: 5px;
+                padding: 5px 10px;
+                border-radius: 20px;
+                color: #504f4f;
+                background-color: #ffffff;
+                border-color: #e1e1e1;
+                font-weight: bold;
+                font-family: 'Bai Jamjuree', sans-serif;
+            }
 
-        Button:hover {
-            color: #faf9f9;
-            background-color: #7e7d7d;
-            border-color: #434343;
-        }
+         Button:hover {
+                color: #faf9f9;
+                background-color: #7e7d7d;
+                border-color: #434343;
+            }
 
         Button:active {
             color: #faf9f9;
@@ -198,6 +194,17 @@
             font-weight: bold;
             font-family: 'Bai Jamjuree', sans-serif;
         }
+        .search-box .button-search {
+                margin: 5px;
+                padding: 5px 10px;
+                border-radius: 20px;
+                color: #8708ef;
+                background-color: #ffffff;
+                border-color: #e1e1e1;
+                font-size: 10px;
+                font-family: 'Bai Jamjuree', sans-serif;
+                font-weight: bold;
+            }
     </style>
 
 </head>
@@ -221,13 +228,16 @@
                             <a href="/catagoryBook/ทั่วไป"><Button>ทั่วไป</Button></a>
                         </ButtonGroup>
                     </div>
+                    <div class="Category_name"><%= title %></div>
+                    <div >all 48 books</div>
                     <div class="row center">
-                        <div class="Category_name"><%= title %></div>
+                        <!-- <div class="Category_name"><%= title %></div> -->
                         <% books.sort((a, b)=> (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
                             <div class="col-6 col-md-3">
                                 <ul class="cards">
                                     <li>
-                                        <a href="/detail" class="card">
+                                        <!-- <a href="/detail" class="card"> -->
+                                        <a  class="card">
                                             <i class="fa-solid fa-circle-trash"></i>
                                             <img src="<%=data.image %>""  class=" card__image" alt="" />
                                             <div class="card__overlay">
@@ -251,7 +261,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <span href="/detail" class="button Edit">More</span>
+                                                <form action="/detail" method="post">
+                                                    <input type="hidden" name="info" value= <%= data._id %> />
+                                                    <button type="submit">More</button>
+                                                </form>
                                             </div>
                                         </a>
                                     </li>

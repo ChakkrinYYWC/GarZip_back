@@ -190,13 +190,19 @@
 
         }
 
-        .Category_name {
+        /* .Category_name {
             margin-top: 50px;
             font-size: 30px;
 
             color: #707070;
             font-weight: bold;
             font-family: 'Bai Jamjuree', sans-serif;
+        } */
+        .namepage {
+        font-family: 'Poppins', sans-serif;
+        color: #707070;
+        padding: 30px;
+        text-align: center;
         }
     </style>
 
@@ -209,17 +215,19 @@
 
                 <center>
 
-                    <div class="Category_name">
-                        ค้นหา: <%= searchtext %>
-                    </div>
+                    <h1 class="namepage">
+                        Search : <%= searchtext %>
+                    </h1>
+                    <div >all 48 books</div>
                     <div class="row center">
                         <% data.found_book_name.forEach(function(book){ %>
+                            
                             <div class="col-6 col-md-3">
                                 <ul class="cards">
                                     <li>
-                                        <a href="/detail" class="card">
+                                        <a  class="card">
                                             <i class="fa-solid fa-circle-trash"></i>
-                                            <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202007/508039/1000233717_front_XXL.jpg?imgname=%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%A5%E0%B8%B1%E0%B8%9A%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%84%E0%B8%99%E0%B8%AD%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B8%AB%E0%B8%99%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%B7%E0%B8%AD%E0%B9%80%E0%B8%97%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%88%E0%B8%B0%E0%B8%A3%E0%B8%B9%E0%B9%89"
+                                            <img src="<%= book.image %>"
                                                 class="card__image" alt="" />
                                             <div class="card__overlay">
                                                 <div class="card__header">

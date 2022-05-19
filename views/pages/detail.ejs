@@ -20,8 +20,14 @@
         <!----===== Boxicons CSS ===== -->
         <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
         <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@200&display=swap" rel="stylesheet">
-
-        <style>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+       <style>
             .Category{
                 background-color: var(--body-color);
             }
@@ -50,11 +56,12 @@
 
 
             .button {
-                padding: 20px;
+                padding: 20px 20px 50px 20px;
                 color:#695CFE;
                 font-family: "MockFlowFont";   
-
+                
                 text-decoration: underline;
+                margin-bottom: 50px;
             }    
             .Delete {
                 color: red;
@@ -89,8 +96,7 @@
             }
             .Category_name{
                 margin-top: 50px;
-                font-size: 30px;
-           
+                font-size: 20px;
                 color: #707070;
                 font-weight: bold;
                 font-family: 'Bai Jamjuree', sans-serif;
@@ -107,12 +113,135 @@
                 clear: both;
             }
             .detail{
-                margin: 100px ;
+                margin: 80px 80px 50px 80px ;
             }
             .book_information{
                 padding: 20px;
                 text-align: left;
                 font-family: 'Bai Jamjuree', sans-serif;
+            }
+            .image_book{
+                width: 300px;
+                height: 400px;
+                border-radius: 20px;
+            }
+
+            .modal-box{ font-family: 'Poppins', sans-serif; }
+            .show-modal{
+                color: #fff;
+                background: #695CFE;
+                font-size: 14px;
+
+                text-transform: capitalize;
+                padding: 10px 15px;
+                margin: 200px auto 0;
+                border: none;
+                outline: none;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                display: block;
+                transition: all 0.3s ease 0s;
+            }
+            .show-modal:hover,
+            .show-modal:focus{
+                color: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+                outline: none;
+            }
+            .modal-dialog{
+                width: 450px;
+                margin: 70px auto 0;
+            }
+            .modal-dialog{ transform: scale(0.5); }
+            .modal-dialog{ transform: scale(1); }
+            .modal-dialog .modal-content{
+                text-align: center;
+                border: none;
+            }
+            .modal-content .close{
+                color: #fff;
+                background: #695CFE;
+                font-size: 25px;
+                font-weight: 400;
+                text-shadow: none;
+                line-height: 27px;
+                height: 25px;
+                width: 25px;
+                border-radius: 50%;
+                overflow: hidden;
+                opacity: 1;
+                position: absolute;
+                left: auto;
+                right: 8px;
+                top: 8px;
+                z-index: 1;
+                transition: all 0.3s;
+            }
+            .modal-content .close:hover{
+                color: #fff;
+                box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            }
+            .close:focus{ outline: none; }
+            .modal-body{ padding: 60px 40px 40px !important; }
+            .modal-body .title{
+                color: #695CFE;
+                font-size: 33px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                margin: 0 0 10px;
+            }
+
+
+            .modal-content .modal-body .btn:focus{ outline: none; }
+            @media only screen and (max-width: 480px){
+                .modal-dialog{ width: 95% !important; }
+                .modal-content .modal-body{
+                    padding: 60px 20px 40px !important;
+                }
+            }
+            .btn {
+                background-color: #695CFE;
+                border-radius: 50px;
+                color: white;
+                margin-top: 30px;
+                box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(237 236 236 / 19%);
+            }
+            .form-control {
+                width: 100%;
+                margin: 10px;
+                border-radius: 20px;
+                color: #969696;
+                font-family: 'Bai Jamjuree', sans-serif;
+                font-weight: bold;
+            }
+            .Episode .form-control {
+                width: 70%;
+                margin: 10px;
+                border-radius: 20px;
+            }
+            .title{
+                padding-bottom: 20px;
+            }
+            .Episode{
+                margin: 100px;
+            }
+
+            .form-control-name {
+                margin-top: 50px;
+                font-size: 20px;
+                color: #969696;
+                font-weight: bold;
+                font-family: 'Bai Jamjuree', sans-serif;
+               
+                border-radius: 20px;
+                display: block;
+                height: 34px;
+                padding: 6px 12px;
+                line-height: 1.42857143;
+
+                background-color: #fff;
+                background-image: none;
+                border: 1px solid #ccc;
+                box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
             }
         </style>
 
@@ -137,31 +266,67 @@
                     <a href="/catagoryBook/ทั่วไป"><Button>ทั่วไป</Button></a>
                 </ButtonGroup>
             </div>
-            <div class="Category_name">ชื่อ: <%= data[0].name %></div>
+            <input class="Category_name form-control-name" value="<%= data[0].name %>"></input>
             <div class="row detail">
                 <div class="column">
-                    <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202007/508039/1000233717_front_XXL.jpg?imgname=%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%A5%E0%B8%B1%E0%B8%9A%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%84%E0%B8%99%E0%B8%AD%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B8%AB%E0%B8%99%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%B7%E0%B8%AD%E0%B9%80%E0%B8%97%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%88%E0%B8%B0%E0%B8%A3%E0%B8%B9%E0%B9%89" alt="admin"/>
+                    <img src="<%= data[0].image %>" class="image_book" alt="admin"/>
 
                 </div>
-                <div class="column book_information">
+                <div class="column book_information ">
      
-                    <div>book id : <%= data[0]._id %></div><br>
-                    <div>auther : <%= data[0].auther %></div><br>
-                    <div>trailer : <%= data[0].trailer %></div><br>
-                    <div>เนื้อเรื่อง : <%= data[0].text %></div><br>
-                    <div>view : <%= data[0].view %></div><br>
-                    <div>create_date : <%= data[0].create_date %></div>
+                    <input value="Book id : <%= data[0]._id %>" class="form-control"> </input>
+                    <input value="Auther : <%= data[0].auther %>" class="form-control"></input>
+                    <input value="Category : <%= data[0].category %>" class="form-control"></input>
+                    <input value="Trailer : <%= data[0].trailer %>" class="form-control"></input>
+                    <input value="Story : <%= data[0].text %>" class="form-control"></input>
+                    
+                    <input value="Create_date : <%= data[0].create_date %>" class="form-control"></input>
+                    <input value="View : <%= data[0].view %>" class="form-control"></input>
+
+
+                    <div class="modal-box">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary btn-lg show-modal" data-toggle="modal" data-target="#myModal">
+                            Add Episode
+                        </button>
+            
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content clearfix">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    <div class="modal-body test">
+                                        <h3 class="title">Add Episode</h3>
+                                    
+                                        <div class="form-group">
+                                            <input class="form-control" name="name" placeholder="name" required>
+                                            <input class="form-control" name="text" placeholder="story"> 
+                                        </div>
+                                        <button type="submit" class="btn" onclick="ConfirmAdd()">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
                 </div>
             </div>
 
-          
             <span onclick="ConfirmDelete()" class="button Delete">Delete</span>
-            <span  onclick="" class="button Edit">Edit</span>
+            <span  onclick="" class="button Edit">Save</span>
 
-
-                
-
-
+            <div class="Episode">
+                <div class="Category_name">Episode </div>
+                <input class="form-control-name" value="<%= data[0].name %>" > </input>
+                <input class="form-control" value="Story : <%= data[0].text %>" ></input><br>
+                <span onclick="ConfirmDelete()" class="button Delete">Delete</span>
+                <span  onclick="" class="button Edit">Save</span>
+            </div>
+            
+           
+            
         </div>
         </center>
     </div>
@@ -188,7 +353,7 @@
         })
 
     }
-        
+    
        
 </script>
 
