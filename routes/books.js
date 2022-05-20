@@ -1,7 +1,9 @@
 const passport = require('passport'),
   express = require('express'),
-  book = require('../models/book');
+  book = require('../models/book'),
+  User = require('../models/user');
 moment = require("moment");
+const mongoose = require("mongoose");
 
 var router = express.Router();
 
@@ -77,45 +79,108 @@ router.post('/:id', (req, res) => {
 
 // ----------------- App ----------------
 router.get('/app', (req, res) => {
-  var datenow = new Date();
-  // today = datenow.toISOString().replace(/T/, ' ').toString();
-  // b = date_now.split(' ');
-  book.find((err, docs) => {    
+  book.find((err, docs) => {
     if (!err) {
-      // console.log(docs)
-      // for (let i = 0; i < docs.length; i++) {
-      //   date_book = docs[i].create_date.toISOString().replace(/T/, ' ')
-      //   a = date_book.split(' ');
-      //   console.log(a)
-      // }
-      // console.log(b[0])
+      for (let i = 0; i < docs.length; i++) {
+        book.findById({ _id: docs[i]._id }, (err, data) => {
+          dateExpired = moment.utc(data.create_date).add(30, 'days').isBefore(moment.utc())
+          if (dateExpired) {
+            book.findByIdAndUpdate(data._id, { status: dateExpired }, { new: true }, (err, docs) => {
+              if (!err) {
+                // console.log("update true successful");
+              } else
+                console.log('Error #1.1 : ' + JSON.stringify(err, undefined, 2))
+            })
+          } else {
+            book.findByIdAndUpdate(data._id, { status: dateExpired }, { new: true }, (err, docs) => {
+              if (!err) {
+                // console.log("update false successful");
+              } else
+                console.log('Error #1.2 : ' + JSON.stringify(err, undefined, 2))
+            })
+          }
+        })
+      }
       res.send(docs)
     } else
-      console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
+      console.log('Error #1.3 : ' + JSON.stringify(err, undefined, 2))
   })
 })
 
-router.get('/app/newbook', (req, res) => {
-  book.find((err, docs) => {
+router.post('/addFav/:id', (req, res) => {
+  // console.log("book_id: " + req.params.id)
+  // console.log("user_id: " + req.body.user_id)
+  User.findByIdAndUpdate(req.body.user_id, { $addToSet: { savebook: req.params.id } }, function (error, update) {
+    if (!error) {
+      console.log('add book')
+      res.send('added book')
+    } else {
+      console.log('Error #2 : ' + JSON.stringify(err, undefined, 2))
+    }
+  })
+})
 
+router.post('/removeFav/:id', async function (req, res) {
+  User.findByIdAndUpdate(req.body.user_id, { $pull: { savebook: req.params.id } }, function (error, update) {
+      if(!error) {
+          console.log('remove book')
+          res.send('removed book')
+      }else{
+        console.log('Error #2 : ' + JSON.stringify(err, undefined, 2))
+      }
+  })
+})
+
+router.post('/saveBook/:id', async function (req, res) {
+  var result = await User.aggregate([
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(req.body.user_id)
+      }
+    },
+  ])
+  res.send(result[0].savebook)
+})
+
+router.get('/bookshelf/:id', async function (req, res) {
+  console.log("user_id: " + req.params.id)
+  var result = await User.aggregate([
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(req.params.id)
+      }
+    },
+  ])
+  console.log(result[0].savebook)
+  book.find({ _id: result[0].savebook }, (err, docs) => {
     if (!err) {
-      console.log(docs.length)
-
-      res.send(docs)
+      // console.log(docs, result[0].savebook)
+      // console.log('+++++++++++')
+      res.send([docs, result[0].savebook])
     } else
-      console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
+      console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
   })
 })
 
 router.get('/app/:name', (req, res) => {
   // console.log(req.params.name)
-  book.find({ category: req.params.name }, (err, docs) => {
-    if (!err) {
-      // console.log(docs)
-      res.send(docs)
-    } else
-      console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
-  })
+  if (req.params.name == 'ใหม่ล่าสุด') {
+    book.find({ status: false }, (err, docs) => {
+      if (!err) {
+        // console.log('docs')
+        res.send(docs)
+      } else
+        console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
+    })
+  } else {
+    book.find({ category: req.params.name }, (err, docs) => {
+      if (!err) {
+        // console.log('docs')
+        res.send(docs)
+      } else
+        console.log('Error #4 : ' + JSON.stringify(err, undefined, 2))
+    })
+  }
 })
 
 //select book catagory//
@@ -142,7 +207,7 @@ router.get('/app/detail/:id', (req, res) => {
       // console.log(docs)
       res.send(docs)
     } else
-      console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
+      console.log('Error #5 : ' + JSON.stringify(err, undefined, 2))
   })
 })
 
