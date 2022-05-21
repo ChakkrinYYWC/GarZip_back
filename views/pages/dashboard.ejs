@@ -34,7 +34,10 @@
       }
 
       .dashboard {
-        margin: 50px 100px;
+        margin: 50px 250px;
+      }
+      .Chart{
+        margin: 50px;
       }
     </style>
   </head>
@@ -47,12 +50,12 @@
         </h1>
         <div class="dashboard">
 
-          <canvas id="myChart3" style="width:100%;max-width:1000px;margin-left: 10%;"></canvas>
+          <canvas id="myChart3" style="width:100%;max-width:800px;margin-left: 10%;"></canvas>
           <script>
             const va3 = document.querySelector('#chartdata')
             var xValues = ["Normal user", "Blind user"];
             var yValues = [va3.dataset.columns3,va3.dataset.columns4];
-            var barColors = ["rgb(255,255,0)", "rgb(255,0,255)"];
+            var barColors = ["#695CFE", "#ff86cf"];
 
             new Chart("myChart3", {
               type: "pie",
@@ -73,7 +76,12 @@
             });
           </script>
 
-          <canvas id="myChart1" style="width:100%;max-width:1000px;margin-left: 10%;"></canvas>
+          
+
+          <div class="Chart">
+            <canvas id="myChart1" class="Chart" style="width:100%;max-width:700px;margin-left: 10%;"></canvas>
+          </div>  
+          
           <script>
             const va = document.querySelector('#chartdata')
             // console.log(va.dataset.columns1)
@@ -82,7 +90,7 @@
             // console.log(va.dataset.columns4)
             var xValues = ["User created"];
             var yValues = [va.dataset.columns1];
-            var barColors = ["rgb(255,0,0)"];
+            var barColors = ["#695CFE"];
 
             new Chart("myChart1", {
               type: "bar",
@@ -102,25 +110,33 @@
             });
           </script>
 
-          <canvas id="myChart2" style="width:100%;max-width:1000px;margin-left: 10%;"></canvas>
-          <script>
-            const va2 = document.querySelector('#chartdata')
-            var xValues = ["Play button pressed"];
-            var yValues = [va2.dataset.columns2];
-            var barColors = ["rgb(255,0,0)"];
+          <div class="Chart">
+            <canvas id="myChart2" class="Chart" style="width:100%;max-width:700px;margin-left: 10%;"></canvas>
+          </div>
+              
+              <script>
+                const va2 = document.querySelector('#chartdata')
+                var xValues = ["Play button pressed"];
+                var yValues = [va2.dataset.columns2];
+                var barColors = ["#695CFE"];
+            
+                new Chart("myChart2", {
+                  type: "bar",
+                  data: {
+                    labels: xValues,
+                    datasets: [{
+                      backgroundColor: barColors,
+                      data: yValues
+                    }]
+                  },
+                });
+              </script>
 
-            new Chart("myChart2", {
-              type: "bar",
-              data: {
-                labels: xValues,
-                datasets: [{
-                  backgroundColor: barColors,
-                  data: yValues
-                }]
-              },
-            });
-          </script>
-        </div>
+
+
+          
+
+      </div>
 
       </div>
     </div>
