@@ -219,18 +219,18 @@
                     </h1>
                     <div class="btcate">
                         <ButtonGroup variant="text" aria-label="text primary button group">
-                            <a href="/catagoryBook"><Button>ทั้งหมด</Button></a>
-                            <a href="/catagoryBook/นิยาย"><Button>นิยาย</Button></a>
-                            <a href="/catagoryBook/ธุรกิจ"><Button>ธุรกิจ</Button></a>
-                            <a href="/catagoryBook/นิทาน"><Button>นิทาน</Button></a>
-                            <a href="/catagoryBook/ศาสนา"><Button>ศาสนา</Button></a>
-                            <a href="/catagoryBook/บทความ"><Button>บทความ</Button></a>
-                            <a href="/catagoryBook/สืบสวน"><Button>สืบสวน</Button></a>
-                            <a href="/catagoryBook/จิตวิทยา"><Button>จิตวิทยา</Button></a>
-                            <a href="/catagoryBook/ทั่วไป"><Button>ทั่วไป</Button></a>
+                            <a href="/dashboardsearch"><Button>ทั้งหมด</Button></a>
+                            <a href="/dashboardsearch/<%= searchtext %>/นิยาย/"><Button>นิยาย</Button></a>
+                            <a href="/dashboardsearch/<%= searchtext %>/ธุรกิจ/"><Button>ธุรกิจ</Button></a>
+                            <a href="/dashboardsearch/<%= searchtext %>/นิทาน/"><Button>นิทาน</Button></a>
+                            <a href="/dashboardsearch/<%= searchtext %>/ศาสนา/"><Button>ศาสนา</Button></a>
+                            <a href="/dashboardsearch/<%= searchtext %>/บทความ/"><Button>บทความ</Button></a>
+                            <a href="/dashboardsearch/<%= searchtext %>/สืบสวน/"><Button>สืบสวน</Button></a>
+                            <a href="/dashboardsearch/<%= searchtext %>/จิตวิทยา/"><Button>จิตวิทยา</Button></a>
+                            <a href="/dashboardsearch/<%= searchtext %>/ทั่วไป/"><Button>ทั่วไป</Button></a>
                         </ButtonGroup>
                     </div>
-                    <div >all 48 books</div>
+                    <div >หนังสือ<%= catagory %>ที่พบ <%= (data.found_book_name.length)+(data.fonud_book_auther.length) %> เล่ม</div>
                     <div class="row center">
                         <% data.found_book_name.forEach(function(book){ %>
                             
