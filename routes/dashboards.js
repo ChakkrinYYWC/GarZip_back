@@ -78,7 +78,7 @@ router.get('/dashboard', isLoggedIn, async function (req, res) {
             }
         },
     ])
-    res.render('pages/dashboard.ejs', { playandregist: playandregist, normaluser: normaluser.length, blinduser: blinduser.length });
+    res.render('pages/dashboard.ejs', { playandregist: playandregist[0], normaluser: normaluser.length, blinduser: blinduser.length });
 });
 
 router.post('/dashboard', isLoggedIn, async function (req, res) {

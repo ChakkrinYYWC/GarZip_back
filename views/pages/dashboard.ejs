@@ -27,30 +27,89 @@
           font-family: 'Bai Jamjuree', sans-serif;
       } */
       .namepage {
-          font-family: 'Poppins', sans-serif;
-          color: #707070;
-          padding: 30px;
-          text-align: center;
-      }
-      .dashboard{
-        margin: 50px 100px;
+        font-family: 'Poppins', sans-serif;
+        color: #707070;
+        padding: 30px;
+        text-align: center;
       }
 
+      .dashboard {
+        margin: 50px 100px;
+      }
     </style>
   </head>
 
   <body>
     <div class="section no-pad-bot Category" id="index-banner">
       <div class="container">
-        <h1 class="namepage">Dashboard</h1>
+        <h1 id="chartdata" data-columns1="<%= playandregist.register %>" data-columns2="<%= playandregist.play %>"
+          data-columns3="<%= normaluser %>" data-columns4="<%= blinduser %>" class="namepage">Dashboard
+        </h1>
         <div class="dashboard">
-          <canvas id="myChart" style="width:100%;max-width:1000px;margin-left: 10%;"></canvas>
+
+          <canvas id="myChart3" style="width:100%;max-width:1000px;margin-left: 10%;"></canvas>
           <script>
-            var xValues = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            var yValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-            var barColors = ["rgb(255,0,0)", "rgb(255,127,0)", "rgb(255,255,0)", "rgb(127,255,0)", "rgb(0,255,0)", "rgb(0,255,127)", "rgb(0,255,255)", "rgb(0,127,255)", "rgb(0,0,255)", "rgb(127,0,255)", "rgb(255,0,255)", "rgb(255,0,0)"];
-  
-            new Chart("myChart", {
+            const va3 = document.querySelector('#chartdata')
+            var xValues = ["Normal user", "Blind user"];
+            var yValues = [va3.dataset.columns3,va3.dataset.columns4];
+            var barColors = ["rgb(255,255,0)", "rgb(255,0,255)"];
+
+            new Chart("myChart3", {
+              type: "pie",
+              data: {
+                labels: xValues,
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: "Normal user and blind user."
+                },
+                labels: 'test'
+              }
+            });
+          </script>
+
+          <canvas id="myChart1" style="width:100%;max-width:1000px;margin-left: 10%;"></canvas>
+          <script>
+            const va = document.querySelector('#chartdata')
+            // console.log(va.dataset.columns1)
+            // console.log(va.dataset.columns2)
+            // console.log(va.dataset.columns3)
+            // console.log(va.dataset.columns4)
+            var xValues = ["User created"];
+            var yValues = [va.dataset.columns1];
+            var barColors = ["rgb(255,0,0)"];
+
+            new Chart("myChart1", {
+              type: "bar",
+              data: {
+                labels: xValues,
+                datasets: [{
+                  backgroundColor: barColors,
+                  data: yValues
+                }]
+              },
+              // options: {
+              //   title: {
+              //     display: true,
+              //     text: "User created."
+              //   },
+              // }
+            });
+          </script>
+
+          <canvas id="myChart2" style="width:100%;max-width:1000px;margin-left: 10%;"></canvas>
+          <script>
+            const va2 = document.querySelector('#chartdata')
+            var xValues = ["Play button pressed"];
+            var yValues = [va2.dataset.columns2];
+            var barColors = ["rgb(255,0,0)"];
+
+            new Chart("myChart2", {
               type: "bar",
               data: {
                 labels: xValues,
@@ -63,7 +122,7 @@
           </script>
         </div>
 
-      </div> 
+      </div>
     </div>
   </body>
 
