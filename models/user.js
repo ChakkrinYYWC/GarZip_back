@@ -14,7 +14,7 @@ let userSchema = new mongoose.Schema({
     },
     savebook : {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Books"
+        ref: "book"
     },
     continue_book : Number,
     permission : String
