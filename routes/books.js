@@ -4,7 +4,7 @@ const passport = require('passport'),
   User = require('../models/user');
 moment = require("moment");
 const mongoose = require("mongoose");
-const { async } = require('q');
+
 const { send } = require('process');
 
 var router = express.Router();
