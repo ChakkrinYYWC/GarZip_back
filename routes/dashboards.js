@@ -6,8 +6,27 @@ const User = require('../models/user');
 const Chart = require('../models/chart');
 const mongoose = require("mongoose");
 
-router.get('/', function (req, res) {
-    // console.log(req.session)
+router.get('/',async function (req, res) {
+    let aaa = await User.aggregate([
+        {
+            $match: {
+                "_id": mongoose.Types.ObjectId('6287ae4ffc35e81c4bbaf03f')
+            }
+        },
+        {
+            $unwind: "$savebook"
+        },
+        {
+            $lookup:
+            {
+                localField: "savebook",
+                from: "books",
+                foreignField: "_id",
+                as: "savebook"
+            }
+        },
+    ])
+    console.log(aaa)
     res.render('pages/login.ejs'); // load the index.ejs file
 });
 
@@ -53,8 +72,9 @@ router.get('/dashboardsearch', isLoggedIn, async function (req, res) {
 });
 router.post("/dashboardsearch", isLoggedIn, async function (req, res) {
     var info = req.body.info
-    if (req.body.info === '') {
+    if (req.body.info == '') {
         info = 'all'
+        console.log("info is all")
     }
     if (info == 'all') {
         var found_book_name = await book.aggregate([
@@ -178,46 +198,86 @@ router.get("/dashboardsearch/:info/:catagory", isLoggedIn, async function (req, 
             }
         ])
     } else {
-        var found_book_name = await book.aggregate([
-            {
-                $addFields: {
-                    result: {
-                        $regexMatch: {
-                            input: "$name",
-                            regex: info,
-                            options: "i"
+        if(catagory == 'ทั้งหมด'){
+            var found_book_name = await book.aggregate([
+                {
+                    $addFields: {
+                        result: {
+                            $regexMatch: {
+                                input: "$name",
+                                regex: info,
+                                options: "i"
+                            }
                         }
                     }
-                }
-            },
-            {
-                $match: {
-                    "result": true,
-                    category: catagory
-                }
-            },
-        ])
-        var fonud_book_auther = await book.aggregate([
-            {
-                $addFields: {
-                    result: {
-                        $regexMatch: {
-                            input: "$auther",
-                            regex: info,
-                            options: "i"
+                },
+                {
+                    $match: {
+                        "result": true
+                    }
+                },
+            ])
+            var fonud_book_auther = await book.aggregate([
+                {
+                    $addFields: {
+                        result: {
+                            $regexMatch: {
+                                input: "$auther",
+                                regex: info,
+                                options: "i"
+                            }
                         }
                     }
-                }
-            },
-            {
-                $match: {
-                    "result": true,
-                    category: catagory
-                }
-            },
-        ])
+                },
+                {
+                    $match: {
+                        "result": true
+                    }
+                },
+            ])
+        }else{
+            var found_book_name = await book.aggregate([
+                {
+                    $addFields: {
+                        result: {
+                            $regexMatch: {
+                                input: "$name",
+                                regex: info,
+                                options: "i"
+                            }
+                        }
+                    }
+                },
+                {
+                    $match: {
+                        "result": true,
+                        category: catagory
+                    }
+                },
+            ])
+            var fonud_book_auther = await book.aggregate([
+                {
+                    $addFields: {
+                        result: {
+                            $regexMatch: {
+                                input: "$auther",
+                                regex: info,
+                                options: "i"
+                            }
+                        }
+                    }
+                },
+                {
+                    $match: {
+                        "result": true,
+                        category: catagory
+                    }
+                },
+            ])
+        }
     }
     const result = { found_book_name, fonud_book_auther }
+    console.log(result)
     return res.render("pages/search.ejs", { data: result, searchtext: info, catagory: catagory })
 })
 
