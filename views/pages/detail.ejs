@@ -401,7 +401,7 @@
                     <% chapter.forEach(function(ep) { %>
                         <form method="POST" action="/book/updatechapter/<%= data[0]._id %>/<%= ep._id %>" class="form">
                             <input class="form-control-name" name="name" value="<%= ep.name %>"> </input>
-                            <input class="form-control" name="text" value="<%= ep.image %>"></input><br>
+                            <input class="form-control" name="image" value="<%= ep.image %>"></input><br>
                             <input class="form-control" name="text" value="<%= ep.text %>"></input><br>
                             <!-- <span onclick="" class="button Edit">Save</span> -->
                             <Button type="submit" onclick="location.reload()">Save</Button>
