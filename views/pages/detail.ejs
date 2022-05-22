@@ -322,7 +322,7 @@
                             <div class="column book_information ">
                                 <input name="name" value="<%= data[0].name %>" class="form-control"></input>
                                 <input name="book_id" value="<%= data[0].book_id %>" class="form-control">
-                                </input> 
+                                </input>
                                 <input name="auther" value="<%= data[0].auther %>" class="form-control"></input>
                                 <input class="form-control" name="image" value="<%= data[0].image %>">
                                 <!-- <input value="Category : <%= data[0].category %>" class="form-control"></input> -->
@@ -344,7 +344,9 @@
                                 <span class="form-control">Create_date : <%= data[0].create_date %></span>
                                 <span class="form-control">View : <%= data[0].view %></span>
                                 <Button type="submit" onclick="location.reload()">Save</Button>
-                                <a href="/book/ทั่วไป"><Button onclick="ConfirmDelete()">Delete</Button></a>
+                        </form>
+                        <form method="POST" action="/book/delete/<%= data[0]._id %>" class="form">
+                            <Button onclick="">Delete</Button></a>
                         </form>
                         <!-- <button type="submit" class="btn" onclick="ConfirmAdd()">Submit</button> -->
                         <!-- <ButtonGroup variant="text" aria-label="text primary button group">
@@ -393,17 +395,24 @@
             <!-- <span onclick="ConfirmDelete()" class="button Delete">Delete</span>
                     <span onclick="" href="/catagoryBook" class="button Edit">Svave</span> -->
 
-            <div class="Episode">
-                <div class="Category_name">Episode </div>
-                <% chapter.sort((a, b)=> (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
-                    <input class="form-control-name" value="<%= data.name %>"> </input>
-                    <input class="form-control" value="Story : <%= data.text %>"></input><br>
-                    
-                    <span onclick="ConfirmDelete()" class="button Delete">Delete</span>
+            <%if (chapter != undefined) { %>
+                <div class="Episode">
+                    <div class="Category_name">Episode </div>
+                    <% chapter.forEach(function(ep) { %>
+                        <form method="POST" action="/book/updatechapter/<%= data[0]._id %>/<%= ep._id %>" class="form">
+                            <input class="form-control-name" name="name" value="<%= ep.name %>"> </input>
+                            <input class="form-control" name="image" value="<%= ep.image %>"></input><br>
+                            <input class="form-control" name="text" value="<%= ep.text %>"></input><br>
+                            <!-- <span onclick="" class="button Edit">Save</span> -->
+                            <Button type="submit" onclick="location.reload()">Save</Button>
+                        </form>
+                        <form method="POST" action="/book/deletechapter/<%= data[0]._id %>/<%= ep._id %>" class="form">
+                            <Button onclick="">Delete</Button></a>
+                        </form>
 
-                    <span onclick="" class="button Edit">Save</span>
-                    <% }); %>
-            </div>
+                        <% }); %>
+                </div>
+                <% } %>
 
 
 
