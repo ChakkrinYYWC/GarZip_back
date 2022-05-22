@@ -108,6 +108,7 @@ router.post('/dashboard', isLoggedIn, async function (req, res) {
 });
 
 router.post('/detail', isLoggedIn, async function (req, res) {
+    // console.log(req.body.info)
     let found_book_id = await book.aggregate([
         {
             $match: {
@@ -115,7 +116,7 @@ router.post('/detail', isLoggedIn, async function (req, res) {
             }
         },
     ])
-    res.render('pages/detail.ejs', { data: found_book_id });
+    res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
 });
 
 router.get('/createbook', isLoggedIn, function (req, res) {
