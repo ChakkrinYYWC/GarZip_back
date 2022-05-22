@@ -5,7 +5,8 @@ const passport = require('passport'),
 moment = require("moment");
 const mongoose = require("mongoose");
 const { async } = require('q');
-const { send } = require('process');
+const crypto = require("crypto");
+const crypto_id = crypto.randomBytes(16).toString("hex");
 
 var router = express.Router();
 
@@ -33,11 +34,10 @@ router.post('/', async (req, res) => {
     category: req.body.category,
     view: 0,
   })
-  // console.log(newRecord)
+  console.log(newRecord)
   newRecord.save((err, docs) => {
     if (!err) {
       console.log("save successful");
-      res.send(docs)
       res.redirect('/book')
     } else
       console.log('Error #2 : ' + JSON.stringify(err, undefined, 2))
@@ -47,17 +47,17 @@ router.post('/chapter/:id', async (req, res) => {
   console.log('#SAVE Chapter')
   console.log('book_id:: ', req.params.id)
   var newChapter = {
+    _id: crypto_id,
     name: req.body.name,
     image: req.body.image,
     text: req.body.text,
   }
   // console.log(newChapter)
+  // console.log(crypto_id)
   book.findByIdAndUpdate(req.params.id, { $addToSet: { chapter: newChapter } }, async function (error, update) {
     if (!error) {
       console.log(update)
       console.log('add new chapter')
-      // res.redirect('/detail')
-      // res.send('update view')
       let found_book_id = await book.aggregate([
         {
           $match: {
@@ -65,12 +65,15 @@ router.post('/chapter/:id', async (req, res) => {
           }
         },
       ])
+      console.log(found_book_id[0].chapter)
       res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
     } else {
       console.log('Error #2 : ' + JSON.stringify(error, undefined, 2))
     }
   })
 })
+
+
 router.post('/updatebook/:id', (req, res) => {
   console.log(req.params.id)
   console.log('#EDIT')
@@ -78,6 +81,7 @@ router.post('/updatebook/:id', (req, res) => {
     book_id: req.body.book_id,
     name: req.body.name,
     auther: req.body.auther,
+    image: req.body.image,
     trailer: req.body.trailer,
     text: req.body.text,
     category: req.body.category,
@@ -94,24 +98,88 @@ router.post('/updatebook/:id', (req, res) => {
           }
         },
       ])
+      console.log(found_book_id[0].chapter)
       res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
       // res.redirect(req.get('referer'));
     } else
       console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
   })
 })
+router.post('/updatechapter/:id/:ep_id', async (req, res) => {
+  console.log('book_id ', req.params.id)
+  console.log('ep_id ', req.params.ep_id)
+  console.log('#EDIT CHAPTERggg')
+  let found_ep_id = await book.findByIdAndUpdate({
+    "_id": req.params.id,
+    "chapter": {
+      $elemMatch: {
+        _id: req.params.ep_id
+      }
+    }
+  },
+    [
+      {
+        $set: {
+          "chapter": {
+            $map: {
+              input: "$chapter",
+              as: "m",
+              in: {
+                $cond: [
+                  { $eq: ["$$m._id", req.params.ep_id] }, // condition
+                  { $mergeObjects: ["$$m", { name: req.body.name, image: req.body.image, text: req.body.text, }] }, // true
+                  "$$m" // false
+                ]
+              }
+            }
+          }
+        }
+      }
+    ])
+  console.log(found_ep_id)
+  let found_book_id = await book.aggregate([
+    {
+      $match: {
+        "_id": mongoose.Types.ObjectId(req.params.id)
+      }
+    },
+  ])
+  console.log(found_book_id[0].chapter)
+  res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
+})
 
-router.post('/:id', (req, res) => {
+
+router.post('/deletechapter/:id/:ep_id', async (req, res) => {
+  // console.log(req.params.name)
+  console.log('book_id ', req.params.id)
+  console.log('ep_id ', req.params.ep_id)
+  console.log("#DELETE CHAPTER")
+  let found_ep_id = await book.findByIdAndUpdate(
+    { _id: req.params.id },
+    { $pull: { 'chapter': { _id: req.params.ep_id } } }
+  );
+  console.log(found_ep_id)
+  let found_book_id = await book.aggregate([
+    {
+      $match: {
+        "_id": mongoose.Types.ObjectId(req.params.id)
+      }
+    },
+  ])
+  console.log(found_book_id[0].chapter)
+  res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
+})
+router.post('/delete/:id', (req, res) => {
   console.log(req.params.id)
   console.log("#DELETE")
-  // book.findByIdAndRemove(req.params.id, (err, docs) => {
-  //   if (!err) {
-  //     console.log("delete successful");
-  //     // res.send(docs)
-  //     res.redirect('/book')
-  //   } else
-  //     console.log('Error #4 : ' + JSON.stringify(err, undefined, 2))
-  // })
+  book.findByIdAndRemove(req.params.id, (err, docs) => {
+    if (!err) {
+      console.log("delete successful");
+      // res.send(docs)
+      res.redirect('/catagoryBook')
+    } else
+      console.log('Error #4 : ' + JSON.stringify(err, undefined, 2))
+  })
 })
 
 
@@ -121,7 +189,7 @@ router.get('/app', (req, res) => {
     if (!err) {
       for (let i = 0; i < docs.length; i++) {
         book.findById({ _id: docs[i]._id }, (err, data) => {
-          dateExpired = moment.utc(data.create_date).add(30, 'days').isBefore(moment.utc())
+          dateExpired = moment.utc(data.create_date).add(7, 'days').isBefore(moment.utc())
           if (dateExpired) {
             book.findByIdAndUpdate(data._id, { status: dateExpired }, { new: true }, (err, docs) => {
               if (!err) {
@@ -225,7 +293,6 @@ router.get('/bookshelf/:id', async function (req, res) {
       }
     },
   ])
-  console.log(result)
   res.status(200).send(result)
   // console.log(result[0].savebook)
   // for (let i = 0; i < result[0].savebook.length ; i++) {

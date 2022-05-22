@@ -341,6 +341,7 @@ router.post('/detail', isLoggedIn, async function (req, res) {
             }
         },
     ])
+    console.log(found_book_id[0].chapter)
     res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
 });
 
@@ -352,6 +353,7 @@ router.get('/catagorybook', isLoggedIn, (req, res) => {
     book.find((err, docs) => {
         if (!err) {
             // res.send(docs) 
+            
             res.render('pages/catagorybook.ejs', { 'books': docs, 'title': 'ทั้งหมด' })
         } else
             console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
