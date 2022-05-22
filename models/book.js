@@ -16,7 +16,11 @@ let BookSchema = new mongoose.Schema({
     create_date : { type: Date, default: Date.now },
     pitch: Number,
     status: Boolean,
-    chapter: Array
+    chapter: {
+        name: String,
+        image: String,
+        text: String
+    }
 });
 
 BookSchema.plugin(passportLocalMongoose);
