@@ -351,14 +351,72 @@ router.post("/catagory", async function (req, res) {
 })
 
 router.get('/app/detail/:id', (req, res) => {
-  // console.log(req.params.id)
   book.find({ _id: req.params.id }, (err, docs) => {
     if (!err) {
       // console.log(docs)
-      res.send(docs)
+      res.status(200).send(docs)
     } else
       console.log('Error #5 : ' + JSON.stringify(err, undefined, 2))
   })
+})
+
+router.get('/app/nextdetail/:task/:id/:category', (req, res) => {
+  // console.log(req.params.task)
+  // console.log(req.params.id)
+  // console.log(req.params.category)
+  if (req.params.task == 'back') {
+    book.find({ _id: { $lt: req.params.id }, category: req.params.category}, async function (error, found) {
+      if (found[0] === undefined) {
+        let max = await book.aggregate([
+          {
+            $match: {
+              category: req.params.category
+            }
+          },
+          {
+            $sort: {
+              "_id": -1
+            }
+          },
+        ])
+        res.status(200).send(max[0]._id)
+      } else {
+        res.status(200).send(found[0]._id)
+      }
+    }).sort({_id: -1 }).limit(1)
+  } if (req.params.task == 'next') {
+    book.find({ _id: { $gt: req.params.id }, category: req.params.category }, async function (error, found) {
+      if (found[0] === undefined) {
+        let less = await book.aggregate([
+          {
+            $match: {
+              category: req.params.category
+            }
+          },
+          {
+            $sort: {
+              "_id": 1
+            }
+          },
+        ])
+        // console.log(max[0])
+        res.status(200).send(less[0]._id)
+      } else {
+        res.status(200).send(found[0]._id)
+      }
+    }).sort({_id: 1 }).limit(1)
+  } else {
+    // book.find({ _id: req.params.id }, (err, docs) => {
+    //   if (!err) {
+    //     console.log("docs")
+    //     console.log(docs)
+    //     res.status(200)
+    //   } else
+    //     console.log('Error #5 : ' + JSON.stringify(err, undefined, 2))
+    // })
+    res.status(400)
+  }
+
 })
 
 module.exports = router;
