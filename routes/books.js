@@ -4,7 +4,7 @@ const passport = require('passport'),
   User = require('../models/user');
 moment = require("moment");
 const mongoose = require("mongoose");
-const { async } = require('q');
+// const { async } = require('q');
 const crypto = require("crypto");
 const crypto_id = crypto.randomBytes(16).toString("hex");
 
@@ -108,7 +108,7 @@ router.post('/updatebook/:id', (req, res) => {
 router.post('/updatechapter/:id/:ep_id', async (req, res) => {
   console.log('book_id ', req.params.id)
   console.log('ep_id ', req.params.ep_id)
-  console.log('#EDIT CHAPTERggg')
+  console.log('#EDIT CHAPTER')
   let found_ep_id = await book.findByIdAndUpdate({
     "_id": req.params.id,
     "chapter": {
@@ -220,7 +220,7 @@ router.post('/updateview/:id', (req, res) => {
       // console.log(docs.view)
       current_view = docs.view
       update_view = current_view + 1
-      console.log(update_view)
+      // console.log(update_view)
       book.findByIdAndUpdate(req.params.id, { $set: { view: update_view } }, function (error, update) {
         if (!error) {
           console.log('update view')
@@ -237,8 +237,8 @@ router.post('/updateview/:id', (req, res) => {
 
 //save book 
 router.post('/addFav/:id', (req, res) => {
-  console.log("book_id: " + req.params.id)
-  console.log("user_id: " + req.body.user_id)
+  // console.log("book_id: " + req.params.id)
+  // console.log("user_id: " + req.body.user_id)
   User.findByIdAndUpdate(req.body.user_id, { $addToSet: { savebook: req.params.id } }, function (error, update) {
     if (!error) {
       console.log('add book')
@@ -270,10 +270,9 @@ router.post('/saveBook/:id', async function (req, res) {
   ])
   res.send(result[0].savebook)
 })
-//ชbookshelf
+//bookshelf
 router.get('/bookshelf/:id', async function (req, res) {
   // console.log("user_id: " + req.params.id)
-  var arr = [];
   var result = await User.aggregate([
     {
       $match: {
@@ -293,24 +292,104 @@ router.get('/bookshelf/:id', async function (req, res) {
       }
     },
   ])
+  // console.log(result)
   res.status(200).send(result)
-  // console.log(result[0].savebook)
-  // for (let i = 0; i < result[0].savebook.length ; i++) {
-  //   console.log(result[0].savebook.length)
-  //   book.find({ _id: result[0].savebook[i] }, async(err, docs) => {
-  //     if (!err) {
-  //       console.log(docs)
-  //       arr.push(docs)
-  //       // console.log('+++++++++++')
-  //       // res.send([docs, result[0].savebook])
-  //       console.log(arr)
-  //       return;
-  //     } else
-  //       console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
-  //   })
-  // }
-  // console.log(arr)
 })
+
+router.post('/continue/:id', async (req, res) => {
+  console.log("book_id: " + req.params.id)
+  console.log("user_id: " + req.body.user_id)
+  var count = true;
+  // console.log("update time!")
+  var newTime = {
+    _id: mongoose.Types.ObjectId(req.params.id),
+    time: req.body.time,
+  }
+  console.log(newTime)
+  let found_id = await User.findByIdAndUpdate({
+    "_id": req.body.user_id,
+    "continue_book": {
+      $match: {
+        "_id": req.params.id
+      }
+    }
+  }
+  )
+  // console.log(found_id.continue_book[0])
+  // console.log(found_id.continue_book.length)
+
+  if (found_id.continue_book.length == 0) {
+    User.findByIdAndUpdate(req.body.user_id, { $addToSet: { continue_book: newTime } }, async function (error, update) {
+      if (!error) {
+        console.log('time create no history')
+        res.send('time create')
+      } else {
+        console.log('Error #2.1 : ' + JSON.stringify(error, undefined, 2))
+      }
+    })
+  } else {
+    for (let i = 0; i < found_id.continue_book.length; i++) {
+      // console.log('book_id db: ' + found_id.continue_book[i]._id)
+      if (found_id.continue_book[i]._id == req.params.id) {
+        await User.findByIdAndUpdate({
+          "_id": req.body.user_id,
+          "continue_book": {
+            $match: {
+              _id: req.params.id
+            }
+          }
+        },
+          [
+            {
+              $set: {
+                "continue_book": {
+                  $map: {
+                    input: "$continue_book",
+                    as: "cb",
+                    in: {
+                      $cond: [
+                        { $eq: ["$$cb._id", mongoose.Types.ObjectId(req.params.id)] }, // condition
+                        { $mergeObjects: ["$$cb", { time: req.body.time }] }, // true
+                        "$$cb"  // false
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        )
+        count = false
+        res.send('time update')
+      } else if (i == (found_id.continue_book.length -1) && count == true) {
+
+        User.findByIdAndUpdate(req.body.user_id, { $addToSet: { continue_book: newTime } }, async function (error, update) {
+          if (!error) {
+            console.log('new time create')
+            res.send(' new time create')
+          } else {
+            console.log('Error #2.3 : ' + JSON.stringify(error, undefined, 2))
+          }
+        })
+
+      }
+    }
+  }
+})
+
+router.post('/removeContinue/:id', async function (req, res) {
+  // console.log("book_id: " + req.params.id)
+  // console.log("user_id: " + req.body.user_id)
+  console.log("remove time!")
+
+  let found_continue_id = await User.findByIdAndUpdate(
+    { _id: req.body.user_id },
+    { $pull: { 'continue_book': { _id: req.params.id } } }
+  );
+  console.log(found_continue_id)
+  res.send('remove time')
+})
+
 
 router.get('/app/:name', (req, res) => {
   // console.log(req.params.name)
@@ -331,6 +410,31 @@ router.get('/app/:name', (req, res) => {
         console.log('Error #4 : ' + JSON.stringify(err, undefined, 2))
     })
   }
+})
+
+router.get('/continue/:id', async function (req, res) {
+  // console.log("user_id: " + req.params.id)
+  var result = await User.aggregate([
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(req.params.id)
+      }
+    },
+    {
+      $unwind: "$continue_book"
+    },
+    {
+      $lookup:
+      {
+        localField: "continue_book._id",
+        from: "books",
+        foreignField: "_id",
+        as: "continue_book"
+      }
+    },
+  ])
+  // console.log(result)
+  res.status(200).send(result)
 })
 
 //select book catagory//

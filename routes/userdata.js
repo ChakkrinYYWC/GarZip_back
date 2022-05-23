@@ -165,4 +165,15 @@ function isLoggedIn(req, res, next) {
   }
 }
 
+router.get("/app/:id", async function (req, res) {
+  // console.log(req.params.id)
+  User.find({ _id: req.params.id }, (err, docs) => {
+    if (!err) {
+      // console.log(docs)
+      res.send(docs)
+    } else
+      console.log('Error #5 : ' + JSON.stringify(err, undefined, 2))
+  })
+})
+
 module.exports = router;
