@@ -4,7 +4,7 @@ const passport = require('passport'),
   User = require('../models/user');
 moment = require("moment");
 const mongoose = require("mongoose");
-const { async } = require('q');
+// const { async } = require('q');
 const crypto = require("crypto");
 const crypto_id = crypto.randomBytes(16).toString("hex");
 
