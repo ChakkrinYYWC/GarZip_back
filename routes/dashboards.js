@@ -79,40 +79,12 @@ router.post("/dashboardsearch", isLoggedIn, async function (req, res) {
     if (info == 'all') {
         var found_book_name = await book.aggregate([
             {
-                $addFields: {
-                    result: {
-                        $regexMatch: {
-                            input: "$name",
-                            regex: "",
-                            options: "i"
-                        }
-                    }
-                }
-            },
-            {
                 $match: {
-                    "result": true
-                }
-            },
-        ])
-        var fonud_book_auther = await book.aggregate([
-            {
-                $addFields: {
-                    result: {
-                        $regexMatch: {
-                            input: "$auther",
-                            regex: "",
-                            options: "i"
-                        }
-                    }
-                }
-            },
-            {
-                $match: {
-                    "result": true
-                }
-            },
-        ])
+                    _id : {$exists: true} 
+                } 
+            }
+          ]);
+        var fonud_book_auther = []
     } else {
         var found_book_name = await book.aggregate([
             {
@@ -152,6 +124,7 @@ router.post("/dashboardsearch", isLoggedIn, async function (req, res) {
         ])
     }
     const result = { found_book_name, fonud_book_auther }
+    console.log(result.fonud_book_auther.length, result.found_book_name.length)
     return res.render("pages/search.ejs", { data: result, searchtext: info, catagory: "ทั้งหมด"  })
 })
 
@@ -159,44 +132,31 @@ router.get("/dashboardsearch/:info/:catagory", isLoggedIn, async function (req, 
     var info = req.params.info
     const catagory = req.params.catagory
     if (info == 'all') {
-        var found_book_name = await book.aggregate([
-            {
-                $addFields: {
-                    result: {
-                        $regexMatch: {
-                            input: "$name",
-                            regex: "",
-                            options: "i"
-                        }
+        if(catagory == 'ทั้งหมด'){
+            var found_book_name = await book.aggregate([
+                {
+                    $match: {
+                        _id : {$exists: true} 
+                    } 
+                }
+              ]);
+            var fonud_book_auther = []
+        }else{
+            var found_book_name = await book.aggregate([
+                {
+                    $match: {
+                        category: catagory
                     }
                 }
-            },
-            {
-                $match: {
-                    "result": true,
-                    category: catagory
-                }
-            }
-        ])
-        var fonud_book_auther = await book.aggregate([
-            {
-                $addFields: {
-                    result: {
-                        $regexMatch: {
-                            input: "$auther",
-                            regex: "",
-                            options: "i"
-                        }
+            ])
+            var fonud_book_auther = await book.aggregate([
+                {
+                    $match: {
+                        category: catagory
                     }
                 }
-            },
-            {
-                $match: {
-                    "result": true,
-                    category: catagory
-                }
-            }
-        ])
+            ])
+        }
     } else {
         if(catagory == 'ทั้งหมด'){
             var found_book_name = await book.aggregate([
@@ -277,7 +237,7 @@ router.get("/dashboardsearch/:info/:catagory", isLoggedIn, async function (req, 
         }
     }
     const result = { found_book_name, fonud_book_auther }
-    // console.log(result)
+    console.log(result)
     return res.render("pages/search.ejs", { data: result, searchtext: info, catagory: catagory })
 })
 
@@ -366,7 +326,7 @@ router.get('/catagorybook/:name', isLoggedIn, (req, res) => {
         if (!err) {
             // res.send(docs)
             // console.log(docs)
-            res.render('pages/catagorybook.ejs', { 'books': docs, 'title': req.params.name })
+            res.render('pages/catagoryBook.ejs', { 'books': docs, 'title': req.params.name })
         } else
             console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
     })
