@@ -26,7 +26,7 @@ router.get('/',async function (req, res) {
             }
         },
     ])
-    console.log(aaa)
+    // console.log(aaa)
     res.render('pages/login.ejs'); // load the index.ejs file
 });
 
@@ -74,7 +74,7 @@ router.post("/dashboardsearch", isLoggedIn, async function (req, res) {
     var info = req.body.info
     if (req.body.info == '') {
         info = 'all'
-        console.log("info is all")
+        // console.log("info is all")
     }
     if (info == 'all') {
         var found_book_name = await book.aggregate([
@@ -277,7 +277,7 @@ router.get("/dashboardsearch/:info/:catagory", isLoggedIn, async function (req, 
         }
     }
     const result = { found_book_name, fonud_book_auther }
-    console.log(result)
+    // console.log(result)
     return res.render("pages/search.ejs", { data: result, searchtext: info, catagory: catagory })
 })
 
@@ -341,7 +341,7 @@ router.post('/detail', isLoggedIn, async function (req, res) {
             }
         },
     ])
-    console.log(found_book_id[0].chapter)
+    // console.log(found_book_id[0].chapter)
     res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
 });
 
@@ -365,7 +365,7 @@ router.get('/catagorybook/:name', isLoggedIn, (req, res) => {
     book.find({ category: req.params.name }, (err, docs) => {
         if (!err) {
             // res.send(docs)
-            console.log(docs)
+            // console.log(docs)
             res.render('pages/catagorybook.ejs', { 'books': docs, 'title': req.params.name })
         } else
             console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
@@ -408,7 +408,7 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
     else {
-        console.log('Block by isLoggedIn')
+        // console.log('Block by isLoggedIn')
         return res.redirect('/');
     }
 }
@@ -420,7 +420,7 @@ function isAdmin(req, res, next) {
             return next();
         }
         else {
-            console.log('Block by isAdmin')
+            // console.log('Block by isAdmin')
             return res.redirect('/');
         }
     });
