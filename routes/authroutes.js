@@ -132,7 +132,7 @@ router.get('/logout', function (req, res) {
 
 router.post('/passwordforgotten', async function (req, res) {
   const user = await User.findOne({ email: req.body.email });
-  if (!user) console.log("User does not exist")
+  // if (!user) console.log("User does not exist")
   let token = await Token.findOne({ userId: user._id });
   if (token) await token.deleteOne();
   let resetToken = crypto.randomBytes(32).toString("hex");
