@@ -354,7 +354,7 @@ router.get('/catagorybook', isLoggedIn, (req, res) => {
         if (!err) {
             // res.send(docs) 
             
-            res.render('pages/catagorybook.ejs', { 'books': docs, 'title': 'ทั้งหมด' })
+            res.render('pages/catagoryBook.ejs', { 'books': docs, 'title': 'ทั้งหมด' })
         } else
             console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
     })
