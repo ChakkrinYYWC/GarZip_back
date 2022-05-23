@@ -149,13 +149,7 @@ router.get("/dashboardsearch/:info/:catagory", isLoggedIn, async function (req, 
                     }
                 }
             ])
-            var fonud_book_auther = await book.aggregate([
-                {
-                    $match: {
-                        category: catagory
-                    }
-                }
-            ])
+            var fonud_book_auther = []
         }
     } else {
         if(catagory == 'ทั้งหมด'){
