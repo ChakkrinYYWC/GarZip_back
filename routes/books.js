@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 })
 ////////////////////////////////////////////////////////////////////////////////////////////////
 router.post('/', async (req, res) => {
-  console.log('#SAVE')
+  // console.log('#SAVE')
   // console.log(req.body.book_id)
   // console.log('category :: ' + req.body.category)
 
@@ -145,8 +145,8 @@ router.post('/chapter/:id', async (req, res) => {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 router.post('/updatebook/:id', (req, res) => {
-  console.log(req.params.id)
-  console.log('#EDIT')
+  // console.log(req.params.id)
+  // console.log('#EDIT')
   var updatedRecord = {
     book_id: req.body.book_id,
     name: req.body.name,
@@ -156,10 +156,10 @@ router.post('/updatebook/:id', (req, res) => {
     text: req.body.text,
     category: req.body.category,
   }
-  console.log(updatedRecord)
+  // console.log(updatedRecord)
   book.findByIdAndUpdate(req.params.id, { $set: updatedRecord }, { new: true }, async (err, docs) => {
     if (!err) {
-      console.log("update successful");
+      // console.log("update successful");
       // window.location.reload()
       let found_book_id = await book.aggregate([
         {
@@ -168,7 +168,7 @@ router.post('/updatebook/:id', (req, res) => {
           }
         },
       ])
-      console.log(found_book_id[0].chapter)
+      // console.log(found_book_id[0].chapter)
       res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
       // res.redirect(req.get('referer'));
     } else
@@ -177,9 +177,9 @@ router.post('/updatebook/:id', (req, res) => {
 })
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.post('/updatechapter/:id/:ep_id', async (req, res) => {
-  console.log('book_id ', req.params.id)
-  console.log('ep_id ', req.params.ep_id)
-  console.log('#EDIT CHAPTER')
+  // console.log('book_id ', req.params.id)
+  // console.log('ep_id ', req.params.ep_id)
+  // console.log('#EDIT CHAPTER')
   let found_ep_id = await book.findByIdAndUpdate({
     "_id": req.params.id,
     "chapter": {
@@ -207,7 +207,7 @@ router.post('/updatechapter/:id/:ep_id', async (req, res) => {
         }
       }
     ])
-  console.log(found_ep_id)
+  // console.log(found_ep_id)
   let found_book_id = await book.aggregate([
     {
       $match: {
@@ -215,21 +215,21 @@ router.post('/updatechapter/:id/:ep_id', async (req, res) => {
       }
     },
   ])
-  console.log(found_book_id[0].chapter)
+  // console.log(found_book_id[0].chapter)
   res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
 })
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 router.post('/deletechapter/:id/:ep_id', async (req, res) => {
   // console.log(req.params.name)
-  console.log('book_id ', req.params.id)
-  console.log('ep_id ', req.params.ep_id)
-  console.log("#DELETE CHAPTER")
+  // console.log('book_id ', req.params.id)
+  // console.log('ep_id ', req.params.ep_id)
+  // console.log("#DELETE CHAPTER")
   let found_ep_id = await book.findByIdAndUpdate(
     { _id: req.params.id },
     { $pull: { 'chapter': { _id: req.params.ep_id } } }
   );
-  console.log(found_ep_id)
+  // console.log(found_ep_id)
   let found_book_id = await book.aggregate([
     {
       $match: {
@@ -237,17 +237,17 @@ router.post('/deletechapter/:id/:ep_id', async (req, res) => {
       }
     },
   ])
-  console.log(found_book_id[0].chapter)
+  // console.log(found_book_id[0].chapter)
   res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
 })
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 router.post('/delete/:id', (req, res) => {
-  console.log(req.params.id)
-  console.log("#DELETE")
+  // console.log(req.params.id)
+  // console.log("#DELETE")
   book.findByIdAndRemove(req.params.id, (err, docs) => {
     if (!err) {
-      console.log("delete successful");
+      // console.log("delete successful");
       // res.send(docs)
       res.redirect('/catagoryBook')
     } else
@@ -296,7 +296,7 @@ router.post('/updateview/:id', (req, res) => {
       // console.log(update_view)
       book.findByIdAndUpdate(req.params.id, { $set: { view: update_view } }, function (error, update) {
         if (!error) {
-          console.log('update view')
+          // console.log('update view')
           res.send('update view')
         } else {
           console.log('Error #2 : ' + JSON.stringify(error, undefined, 2))
@@ -314,7 +314,7 @@ router.post('/addFav/:id', (req, res) => {
   // console.log("user_id: " + req.body.user_id)
   User.findByIdAndUpdate(req.body.user_id, { $addToSet: { savebook: req.params.id } }, function (error, update) {
     if (!error) {
-      console.log('add book')
+      // console.log('add book')
       res.send('added book')
     } else {
       console.log('Error #2 : ' + JSON.stringify(error, undefined, 2))
@@ -325,7 +325,7 @@ router.post('/addFav/:id', (req, res) => {
 router.post('/removeFav/:id', async function (req, res) {
   User.findByIdAndUpdate(req.body.user_id, { $pull: { savebook: req.params.id } }, function (error, update) {
     if (!error) {
-      console.log('remove book')
+      // console.log('remove book')
       res.send('removed book')
     } else {
       console.log('Error #2 : ' + JSON.stringify(err, undefined, 2))
@@ -370,8 +370,8 @@ router.get('/bookshelf/:id', async function (req, res) {
 })
 
 router.post('/continue/:id', async (req, res) => {
-  console.log("book_id: " + req.params.id)
-  console.log("user_id: " + req.body.user_id)
+  // console.log("book_id: " + req.params.id)
+  // console.log("user_id: " + req.body.user_id)
   var count = true;
   // console.log("update time!")
   var newTime = {
@@ -394,7 +394,7 @@ router.post('/continue/:id', async (req, res) => {
   if (found_id.continue_book.length == 0) {
     User.findByIdAndUpdate(req.body.user_id, { $addToSet: { continue_book: newTime } }, async function (error, update) {
       if (!error) {
-        console.log('time create no history')
+        // console.log('time create no history')
         res.send('time create')
       } else {
         console.log('Error #2.1 : ' + JSON.stringify(error, undefined, 2))
@@ -438,7 +438,7 @@ router.post('/continue/:id', async (req, res) => {
 
         User.findByIdAndUpdate(req.body.user_id, { $addToSet: { continue_book: newTime } }, async function (error, update) {
           if (!error) {
-            console.log('new time create')
+            // console.log('new time create')
             res.send(' new time create')
           } else {
             console.log('Error #2.3 : ' + JSON.stringify(error, undefined, 2))
@@ -453,13 +453,13 @@ router.post('/continue/:id', async (req, res) => {
 router.post('/removeContinue/:id', async function (req, res) {
   // console.log("book_id: " + req.params.id)
   // console.log("user_id: " + req.body.user_id)
-  console.log("remove time!")
+  // console.log("remove time!")
 
   let found_continue_id = await User.findByIdAndUpdate(
     { _id: req.body.user_id },
     { $pull: { 'continue_book': { _id: req.params.id } } }
   );
-  console.log(found_continue_id)
+  // console.log(found_continue_id)
   res.send('remove time')
 })
 
@@ -528,14 +528,72 @@ router.post("/catagory", async function (req, res) {
 })
 
 router.get('/app/detail/:id', (req, res) => {
-  // console.log(req.params.id)
   book.find({ _id: req.params.id }, (err, docs) => {
     if (!err) {
       // console.log(docs)
-      res.send(docs)
+      res.status(200).send(docs)
     } else
       console.log('Error #5 : ' + JSON.stringify(err, undefined, 2))
   })
+})
+
+router.get('/app/nextdetail/:task/:id/:category', (req, res) => {
+  // console.log(req.params.task)
+  // console.log(req.params.id)
+  // console.log(req.params.category)
+  if (req.params.task == 'back') {
+    book.find({ _id: { $lt: req.params.id }, category: req.params.category}, async function (error, found) {
+      if (found[0] === undefined) {
+        let max = await book.aggregate([
+          {
+            $match: {
+              category: req.params.category
+            }
+          },
+          {
+            $sort: {
+              "_id": -1
+            }
+          },
+        ])
+        res.status(200).send(max[0]._id)
+      } else {
+        res.status(200).send(found[0]._id)
+      }
+    }).sort({_id: -1 }).limit(1)
+  } if (req.params.task == 'next') {
+    book.find({ _id: { $gt: req.params.id }, category: req.params.category }, async function (error, found) {
+      if (found[0] === undefined) {
+        let less = await book.aggregate([
+          {
+            $match: {
+              category: req.params.category
+            }
+          },
+          {
+            $sort: {
+              "_id": 1
+            }
+          },
+        ])
+        // console.log(max[0])
+        res.status(200).send(less[0]._id)
+      } else {
+        res.status(200).send(found[0]._id)
+      }
+    }).sort({_id: 1 }).limit(1)
+  } else {
+    // book.find({ _id: req.params.id }, (err, docs) => {
+    //   if (!err) {
+    //     console.log("docs")
+    //     console.log(docs)
+    //     res.status(200)
+    //   } else
+    //     console.log('Error #5 : ' + JSON.stringify(err, undefined, 2))
+    // })
+    res.status(400)
+  }
+
 })
 
 module.exports = router;

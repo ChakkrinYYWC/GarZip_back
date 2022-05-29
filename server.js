@@ -102,8 +102,8 @@ app.use('/search', search)
 app.use('/', dashboards)
 app.use('/tts', tts)
 
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  console.log('App listening on port ' + port);
+app.listen(PORT, () => {
+  console.log('App listening on port ' + PORT);
 });
