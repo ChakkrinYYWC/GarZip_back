@@ -365,86 +365,86 @@ router.get('/bookshelf/:id', async function (req, res) {
   res.status(200).send(result)
 })
 
-router.post('/continue/:id', async (req, res) => {
-  // console.log("book_id: " + req.params.id)
-  // console.log("user_id: " + req.body.user_id)
-  var count = true;
-  // console.log("update time!")
-  var newTime = {
-    _id: mongoose.Types.ObjectId(req.params.id),
-    time: req.body.time,
-  }
-  console.log(newTime)
-  let found_id = await User.findByIdAndUpdate({
-    "_id": req.body.user_id,
-    "continue_book": {
-      $match: {
-        "_id": req.params.id
-      }
-    }
-  }
-  )
-  // console.log(found_id.continue_book[0])
-  // console.log(found_id.continue_book.length)
+// router.post('/continue/:id', async (req, res) => {
+//   // console.log("book_id: " + req.params.id)
+//   // console.log("user_id: " + req.body.user_id)
+//   var count = true;
+//   // console.log("update time!")
+//   var newTime = {
+//     _id: mongoose.Types.ObjectId(req.params.id),
+//     time: req.body.time,
+//   }
+//   console.log(newTime)
+//   let found_id = await User.findByIdAndUpdate({
+//     "_id": req.body.user_id,
+//     "continue_book": {
+//       $match: {
+//         "_id": req.params.id
+//       }
+//     }
+//   }
+//   )
+//   // console.log(found_id.continue_book[0])
+//   // console.log(found_id.continue_book.length)
 
-  if (found_id.continue_book.length == 0) {
-    User.findByIdAndUpdate(req.body.user_id, { $addToSet: { continue_book: newTime } }, async function (error, update) {
-      if (!error) {
-        // console.log('time create no history')
-        res.send('time create')
-      } else {
-        console.log('Error #2.1 : ' + JSON.stringify(error, undefined, 2))
-      }
-    })
-  } else {
-    for (let i = 0; i < found_id.continue_book.length; i++) {
-      // console.log('book_id db: ' + found_id.continue_book[i]._id)
-      if (found_id.continue_book[i]._id == req.params.id) {
-        await User.findByIdAndUpdate({
-          "_id": req.body.user_id,
-          "continue_book": {
-            $match: {
-              _id: req.params.id
-            }
-          }
-        },
-          [
-            {
-              $set: {
-                "continue_book": {
-                  $map: {
-                    input: "$continue_book",
-                    as: "cb",
-                    in: {
-                      $cond: [
-                        { $eq: ["$$cb._id", mongoose.Types.ObjectId(req.params.id)] }, // condition
-                        { $mergeObjects: ["$$cb", { time: req.body.time }] }, // true
-                        "$$cb"  // false
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        )
-        count = false
-        res.send('time update')
-      } else if (i == (found_id.continue_book.length - 1) && count == true) {
+//   if (found_id.continue_book.length == 0) {
+//     User.findByIdAndUpdate(req.body.user_id, { $addToSet: { continue_book: newTime } }, async function (error, update) {
+//       if (!error) {
+//         // console.log('time create no history')
+//         res.send('time create')
+//       } else {
+//         console.log('Error #2.1 : ' + JSON.stringify(error, undefined, 2))
+//       }
+//     })
+//   } else {
+//     for (let i = 0; i < found_id.continue_book.length; i++) {
+//       // console.log('book_id db: ' + found_id.continue_book[i]._id)
+//       if (found_id.continue_book[i]._id == req.params.id) {
+//         await User.findByIdAndUpdate({
+//           "_id": req.body.user_id,
+//           "continue_book": {
+//             $match: {
+//               _id: req.params.id
+//             }
+//           }
+//         },
+//           [
+//             {
+//               $set: {
+//                 "continue_book": {
+//                   $map: {
+//                     input: "$continue_book",
+//                     as: "cb",
+//                     in: {
+//                       $cond: [
+//                         { $eq: ["$$cb._id", mongoose.Types.ObjectId(req.params.id)] }, // condition
+//                         { $mergeObjects: ["$$cb", { time: req.body.time }] }, // true
+//                         "$$cb"  // false
+//                       ]
+//                     }
+//                   }
+//                 }
+//               }
+//             }
+//           ]
+//         )
+//         count = false
+//         res.send('time update')
+//       } else if (i == (found_id.continue_book.length - 1) && count == true) {
 
-        User.findByIdAndUpdate(req.body.user_id, { $addToSet: { continue_book: newTime } }, async function (error, update) {
-          if (!error) {
-            // console.log('new time create')
-            res.send(' new time create')
-          } else {
-            console.log('Error #2.3 : ' + JSON.stringify(error, undefined, 2))
-          }
-        })
+//         User.findByIdAndUpdate(req.body.user_id, { $addToSet: { continue_book: newTime } }, async function (error, update) {
+//           if (!error) {
+//             // console.log('new time create')
+//             res.send(' new time create')
+//           } else {
+//             console.log('Error #2.3 : ' + JSON.stringify(error, undefined, 2))
+//           }
+//         })
 
-      }
-    }
-  }
-})
+//       }
+//     }
+//   }
+// })
 
 router.post('/removeContinue/:id', async function (req, res) {
   // console.log("book_id: " + req.params.id)
