@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
   const [response] = await client.synthesizeSpeech(request);
   const writeFile = util.promisify(fs.writeFile);
   await writeFile(outputFilePath, response.audioContent, 'binary');
-  console.log(`Audio content written to file: ${outputFilePath}`);
+  // console.log(`Audio content written to file: ${outputFilePath}`);
 
   var newRecord = new book({
     book_id: req.body.book_id,
@@ -59,35 +59,30 @@ router.post('/', async (req, res) => {
   // console.log(newRecord)
   newRecord.save((err, docs) => {
     if (!err) {
-      console.log("save successful");
+      var found_book_id
+      // book.findById(docs._id, async function(err, data){
+      //   if (!err) {
+      //     found_book_id = await book.aggregate([
+      //       {
+      //         $match: {
+      //           "_id": mongoose.Types.ObjectId(data._id)
+      //         }
+      //       },
+      //     ])
+      //     res.render('pages/detail.ejs', { data: found_book_id, chapter: undefined });   /////ติด
+      //   } else
+      //     console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
+      // })
       res.download(outputFilePath, (err, res) => {
         if (err) {
           fs.unlinkSync(outputFilePath)
           res.send("Unable to download the file")
+        } else {
+          fs.unlinkSync(outputFilePath)
         }
-        fs.unlinkSync(outputFilePath)
-      })
-      // res.redirect('/book')
-      book.findById(docs._id, async (err, data) => {
-        if (!err) {
-          let found_book_id = await book.aggregate([
-            {
-              $match: {
-                "_id": mongoose.Types.ObjectId(data._id)
-              }
-            },
-          ])
-          console.log(found_book_id)
-          // res.setHeader("Content-Type", "text/html");
-          res.render('pages/detail.ejs', { data: found_book_id, chapter: undefined });   /////ติด
-          // res.end();
-        } else
-          console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
-
       })
     } else
       console.log('Error #2 : ' + JSON.stringify(err, undefined, 2))
-
   })
 
 })
@@ -475,7 +470,7 @@ router.get('/app/:name', (req, res) => {
       } else
         console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
     })
-  } else if(req.params.name == 'ยอดนิยม') {
+  } else if (req.params.name == 'ยอดนิยม') {
     book.find((err, docs) => {
       if (!err) {
         // console.log('docs')
@@ -483,7 +478,7 @@ router.get('/app/:name', (req, res) => {
       } else
         console.log('Error #4 : ' + JSON.stringify(err, undefined, 2))
     })
-  }else {
+  } else {
     book.find({ category: req.params.name }, (err, docs) => {
       if (!err) {
         // console.log('docs')
@@ -551,7 +546,7 @@ router.get('/app/nextdetail/:task/:id/:category', (req, res) => {
   // console.log(req.params.id)
   // console.log(req.params.category)
   if (req.params.task == 'back') {
-    book.find({ _id: { $lt: req.params.id }, category: req.params.category}, async function (error, found) {
+    book.find({ _id: { $lt: req.params.id }, category: req.params.category }, async function (error, found) {
       if (found[0] === undefined) {
         let max = await book.aggregate([
           {
@@ -569,7 +564,7 @@ router.get('/app/nextdetail/:task/:id/:category', (req, res) => {
       } else {
         res.status(200).send(found[0]._id)
       }
-    }).sort({_id: -1 }).limit(1)
+    }).sort({ _id: -1 }).limit(1)
   } if (req.params.task == 'next') {
     book.find({ _id: { $gt: req.params.id }, category: req.params.category }, async function (error, found) {
       if (found[0] === undefined) {
@@ -590,7 +585,7 @@ router.get('/app/nextdetail/:task/:id/:category', (req, res) => {
       } else {
         res.status(200).send(found[0]._id)
       }
-    }).sort({_id: 1 }).limit(1)
+    }).sort({ _id: 1 }).limit(1)
   } else {
     // book.find({ _id: req.params.id }, (err, docs) => {
     //   if (!err) {
