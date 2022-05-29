@@ -370,12 +370,16 @@ function isLoggedIn(req, res, next) {
 function isAdmin(req, res, next) {
     User.findOne({ username: req.body.username }, async function (error, found) {
         // console.log(found.permission)
-        if (found.permission == 'admin') {
-            return next();
-        }
-        else {
-            // console.log('Block by isAdmin')
+        if(found == null){
             return res.redirect('/');
+        }else{
+            if (found.permission == 'admin') {
+                return next();
+            }
+            else {
+                // console.log('Block by isAdmin')
+                return res.redirect('/');
+            }
         }
     });
 }
