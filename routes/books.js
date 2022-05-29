@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
   const request = {
     input: { text: text },
     voice: { languageCode: req.body.language, ssmlGender: 'NEUTRAL' },
-    audioConfig: { audioEncoding: 'MP3', pitch: req.body.pitch, speakingRate: 1 },
+    audioConfig: { audioEncoding: 'MP3', pitch: req.body.pitch, speakingRate: 0.85 },
   };
   // console.log(request)
   const [response] = await client.synthesizeSpeech(request);
@@ -99,7 +99,7 @@ router.post('/chapter/:id', async (req, res) => {
   const request = {
     input: { text: text },
     voice: { languageCode: req.body.language, ssmlGender: 'NEUTRAL' },
-    audioConfig: { audioEncoding: 'MP3', pitch: req.body.pitch, speakingRate: 1 },
+    audioConfig: { audioEncoding: 'MP3', pitch: req.body.pitch, speakingRate: 0.85 },
   };
   // console.log(request)
   const [response] = await client.synthesizeSpeech(request);
@@ -262,7 +262,7 @@ router.get('/app', (req, res) => {
     if (!err) {
       for (let i = 0; i < docs.length; i++) {
         book.findById({ _id: docs[i]._id }, (err, data) => {
-          dateExpired = moment.utc(data.create_date).add(7, 'days').isBefore(moment.utc())
+          dateExpired = moment.utc(data.create_date).add(1, 'days').isBefore(moment.utc())
           if (dateExpired) {
             book.findByIdAndUpdate(data._id, { status: dateExpired }, { new: true }, (err, docs) => {
               if (!err) {
@@ -465,7 +465,7 @@ router.post('/removeContinue/:id', async function (req, res) {
 
 
 router.get('/app/:name', (req, res) => {
-  // console.log(req.params.name)
+  console.log(req.params.name)
   if (req.params.name == 'ใหม่ล่าสุด') {
     book.find({ status: false }, (err, docs) => {
       if (!err) {
@@ -474,7 +474,15 @@ router.get('/app/:name', (req, res) => {
       } else
         console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
     })
-  } else {
+  } else if(req.params.name == 'ยอดนิยม') {
+    book.find((err, docs) => {
+      if (!err) {
+        // console.log('docs')
+        res.send(docs)
+      } else
+        console.log('Error #4 : ' + JSON.stringify(err, undefined, 2))
+    })
+  }else {
     book.find({ category: req.params.name }, (err, docs) => {
       if (!err) {
         // console.log('docs')

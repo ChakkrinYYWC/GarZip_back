@@ -146,7 +146,7 @@ router.post("/audio/upload/chapter/:id/:ep_id", async (req, res) => {
                                         in: {
                                             $cond: [
                                                 { $eq: ["$$m._id", req.params.ep_id] }, // condition
-                                                { $mergeObjects: ["$$m", { vioce: audio.secure_url }] }, // true
+                                                { $mergeObjects: ["$$m", { voice: audio.secure_url }] }, // true
                                                 "$$m" // false
                                             ]
                                         }
@@ -215,7 +215,7 @@ router.post('/', async (req, res) => {
     const request = {
         input: { text: text },
         voice: { languageCode: req.body.language, ssmlGender: 'NEUTRAL' },
-        audioConfig: { audioEncoding: 'MP3', pitch: req.body.pitch, speakingRate: 1 },
+        audioConfig: { audioEncoding: 'MP3', pitch: req.body.pitch, speakingRate: 0.85 },
     };
     console.log(request)
     const [response] = await client.synthesizeSpeech(request);
