@@ -331,6 +331,15 @@
             border: 1px solid #ccc;
             box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
         }
+        .form-control-file{
+            padding: 20px;
+            font-weight: bold;
+            font-size: 15px;
+            font-family: 'Bai Jamjuree', sans-serif;
+        }
+        form input[type=file] {
+            display: revert;
+        }
     </style>
 
 </head>
@@ -482,6 +491,17 @@
                             <!-- <span onclick="" class="button Edit">Save</span> -->
 
                         </form>
+                        <form method="POST" enctype="multipart/form-data"
+                        action="/tts/audio/upload/chapter/<%= data[0]._id %>/<%= ep._id %>">
+                        <!-- <div class="form-group"> -->
+                        <input type="file" name="audio" class="form-control-file"
+                            id="exampleFormControlFile1">
+                        <!-- </div> -->
+                        <button type="submit">
+                            Add Audio
+                        </button>
+                    </form>
+             
                         <center class="pum">
                             <span class="column2">
                                 <Button type="submit" onclick="location.reload()">Save</Button>
@@ -492,18 +512,8 @@
                                     <Button onclick="">Delete</Button></a>
                                 </form>
                             </div>
-                            <div class="column2">
-                                <form method="POST" enctype="multipart/form-data"
-                                    action="/tts/audio/upload/chapter/<%= data[0]._id %>/<%= ep._id %>">
-                                    <!-- <div class="form-group"> -->
-                                    <input type="file" name="audio" class="form-control-file"
-                                        id="exampleFormControlFile1">
-                                    <!-- </div> -->
-                                    <button type="submit">
-                                        Add Audio
-                                    </button>
-                                </form>
-                            </div>
+                           
+                               
 
                         </center>
                         <br>
