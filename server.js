@@ -13,6 +13,7 @@ const authroutes = require('./routes/authroutes.js'),
   // Book = require('./models/book');
   userdata = require('./routes/userdata'),
   search = require('./routes/search');
+  tts = require('./routes/texttospeech');
 dashboards = require('./routes/dashboards.js');
 const config = require('./config')
 const mongoose = require("mongoose"),
@@ -99,7 +100,7 @@ app.use('/book', books);
 app.use('/user', userdata)
 app.use('/search', search)
 app.use('/', dashboards)
-
+app.use('/tts', tts)
 
 const PORT = process.env.PORT || 3000;
 

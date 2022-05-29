@@ -90,7 +90,8 @@
             font-weight: bold;
             font-family: 'Bai Jamjuree', sans-serif;
         }
-         .button-control{
+
+        .button-control {
             margin: 5px;
             padding: 5px 10px;
             border-radius: 20px;
@@ -99,7 +100,7 @@
             border-color: #e1e1e1;
             font-weight: bold;
             font-family: 'Bai Jamjuree', sans-serif;
-            
+
         }
 
         Button:hover {
@@ -122,6 +123,7 @@
             font-weight: bold;
             font-family: 'Bai Jamjuree', sans-serif;
         }
+
         .column1 {
             float: left;
             width: 40%;
@@ -131,26 +133,30 @@
             float: left;
             width: 60%;
         }
+
         .column2 {
             float: left;
             width: 50%;
-        
-            margin-bottom:50px ;
+
+            margin-bottom: 50px;
         }
-        .pum{
+
+        .pum {
             width: 90%;
             margin-top: 50px;
 
         }
-        .Episode .pum{
+
+        .Episode .pum {
             width: 50%;
             margin-top: 10px;
 
         }
+
         .Episode .column2 {
             float: left;
             width: 50%;
-   
+
         }
 
         /* Clear floats after the columns */
@@ -325,7 +331,15 @@
             border: 1px solid #ccc;
             box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
         }
-      
+        .form-control-file{
+            padding: 20px;
+            font-weight: bold;
+            font-size: 15px;
+            font-family: 'Bai Jamjuree', sans-serif;
+        }
+        form input[type=file] {
+            display: revert;
+        }
     </style>
 
 </head>
@@ -336,6 +350,7 @@
             <div class="container">
                 <h1 class="namepage">Category Books</h1>
                 <center>
+
                     <div class="btcate">
                         <ButtonGroup variant="text" aria-label="text primary button group">
                             <a href="/catagoryBook"><Button>ทั้งหมด</Button></a>
@@ -349,9 +364,9 @@
                             <a href="/catagoryBook/ทั่วไป"><Button>ทั่วไป</Button></a>
                         </ButtonGroup>
                     </div>
+
                     <!-- <input class="Category_name form-control-name" name="name" value="<%= data[0].name %>"></input> -->
                     <div class="row detail">
-
                         <form method="POST" action="/book/updatebook/<%= data[0]._id %>" class="form">
                             <div class="column1">
                                 <img src="<%= data[0].image %>" class="image_book" alt="admin" />
@@ -381,26 +396,34 @@
                                 <span class="form-control">Create_date : <%= data[0].create_date %></span>
                                 <span class="form-control">View : <%= data[0].view %></span>
                                 <!-- <Button class="button-control" type="submit" onclick="location.reload()">Save </Button> -->
-                            
-                            </form>
-                            <center class="pum">
-                                <div class="column2">
-                                    <Button class="button-control" type="submit" onclick="location.reload()">Save </Button>
-                                </div>
-                                <div class="column2">
-                                    <form method="POST" action="/book/delete/<%= data[0]._id %>" class="form">
-                                        <Button class="button-control" onclick="">Delete</Button></a>
-                                    </form>
-                                </div>
-                            </center>
+                        </form>
 
-                          
-                        
+                        <form method="POST" enctype="multipart/form-data" action="/tts/audio/upload/<%= data[0]._id %>">
+                            <!-- <div class="form-group"> -->
+                            <input type="file" name="audio" class="form-control-file" id="exampleFormControlFile1">
+                            <!-- </div> -->
+                            <button type="submit">
+                                Add Audio
+                            </button>
+                        </form>
+
+                        <center class="pum">
+                            <div class="column2">
+                                <Button class="button-control" type="submit" onclick="location.reload()">Save </Button>
+                            </div>
+                            <div class="column2">
+                                <form method="POST" action="/book/delete/<%= data[0]._id %>" class="form">
+                                    <Button class="button-control" onclick="">Delete</Button></a>
+                                </form>
+                            </div>
+                        </center>
+
+
+
                         <!-- <button type="submit" class="btn" onclick="ConfirmAdd()">Submit</button> -->
                         <!-- <ButtonGroup variant="text" aria-label="text primary button group">
                                 <a onclick="ConfirmDelete()" href="/"><Button>Delete</Button></a>
                                 <!-- <Button>Save</Button> -->
-                       
 
 
                         <div class="modal-box">
@@ -425,10 +448,23 @@
                                                     <input class="form-control" name="name" placeholder="name" required>
                                                     <input class="form-control" name="image" placeholder="url image"
                                                         required>
-                                                    <input class="form-control" name="text" placeholder="story">
+                                                    <!-- <input class="form-control" name="text" placeholder="story"> -->
+                                                    <select class="form-control" id="exampleFormControlSelect1"
+                                                        name="language" required>
+                                                        <option value="th-TH" selected>Thai</option>
+                                                        <option value="en-US">English</option>
+                                                    </select>
+                                                    <select class="form-control" id="exampleFormControlSelect1"
+                                                        name="pitch" required>
+                                                        <option value="1" selected>ผู้หญิง</option>
+                                                        <option value="-8">ผู้ชาย</option>
+                                                    </select>
+                                                    <textarea class="form-control" name="text" placeholder="story"
+                                                        cols="30" rows="10" maxlength="2200" required></textarea>
                                                 </div>
                                                 <button type="submit" class="btn" onclick="ConfirmAdd()">Submit</button>
                                             </form>
+
                                         </div>
                                     </div>
                                 </div>
@@ -443,29 +479,44 @@
             <!-- <span onclick="ConfirmDelete()" class="button Delete">Delete</span>
                     <span onclick="" href="/catagoryBook" class="button Edit">Svave</span> -->
 
-            <%if (chapter != undefined) { %>
+            <%if (chapter !=undefined) { %>
                 <div class="Episode">
                     <div class="Category_name">Episode </div>
                     <% chapter.forEach(function(ep) { %>
-                        <form method="POST" action="/book/updatechapter/<%= data[0]._id %>/<%= ep._id %>" class="form_Episode">
+                        <form method="POST" action="/book/updatechapter/<%= data[0]._id %>/<%= ep._id %>"
+                            class="form_Episode">
                             <input class="form-control-name" name="name" value="<%= ep.name %>"> </input>
                             <input class="form-control" name="image" value="<%= ep.image %>"></input><br>
                             <input class="form-control" name="text" value="<%= ep.text %>"></input><br>
                             <!-- <span onclick="" class="button Edit">Save</span> -->
-                            
+
                         </form>
-                    <center class="pum">
-                        <span class="column2">
-                            <Button type="submit" onclick="location.reload()">Save</Button>
-                        </span>
-                        <div class="column2">
-                            <form method="POST" action="/book/deletechapter/<%= data[0]._id %>/<%= ep._id %>" class="form">
-                                <Button onclick="">Delete</Button></a>
-                            </form>
-                        </div>
-                      
-                    </center>
-                    <br>
+                        <form method="POST" enctype="multipart/form-data"
+                        action="/tts/audio/upload/chapter/<%= data[0]._id %>/<%= ep._id %>">
+                        <!-- <div class="form-group"> -->
+                        <input type="file" name="audio" class="form-control-file"
+                            id="exampleFormControlFile1">
+                        <!-- </div> -->
+                        <button type="submit">
+                            Add Audio
+                        </button>
+                    </form>
+             
+                        <center class="pum">
+                            <span class="column2">
+                                <Button type="submit" onclick="location.reload()">Save</Button>
+                            </span>
+                            <div class="column2">
+                                <form method="POST" action="/book/deletechapter/<%= data[0]._id %>/<%= ep._id %>"
+                                    class="form">
+                                    <Button onclick="">Delete</Button></a>
+                                </form>
+                            </div>
+                           
+                               
+
+                        </center>
+                        <br>
                         <% }); %>
                 </div>
                 <% } %>

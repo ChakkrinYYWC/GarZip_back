@@ -7,6 +7,13 @@ const mongoose = require("mongoose");
 // const { async } = require('q');
 const crypto = require("crypto");
 const crypto_id = crypto.randomBytes(16).toString("hex");
+require('dotenv').config()
+const textToSpeech = require('@google-cloud/text-to-speech');
+const fs = require('fs');
+const util = require('util');
+const client = new textToSpeech.TextToSpeechClient();
+const cloudinary = require('./cloudinary');
+const multer = require('multer');
 
 var router = express.Router();
 
@@ -19,11 +26,25 @@ router.get('/', (req, res) => {
       console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
   })
 })
-
+////////////////////////////////////////////////////////////////////////////////////////////////
 router.post('/', async (req, res) => {
   // console.log('#SAVE')
   // console.log(req.body.book_id)
   // console.log('category :: ' + req.body.category)
+
+  const text = req.body.text
+  outputFilePath = "public/voice/" + req.body.name + ".mp3"
+  const request = {
+    input: { text: text },
+    voice: { languageCode: req.body.language, ssmlGender: 'NEUTRAL' },
+    audioConfig: { audioEncoding: 'MP3', pitch: req.body.pitch, speakingRate: 0.85 },
+  };
+  // console.log(request)
+  const [response] = await client.synthesizeSpeech(request);
+  const writeFile = util.promisify(fs.writeFile);
+  await writeFile(outputFilePath, response.audioContent, 'binary');
+  console.log(`Audio content written to file: ${outputFilePath}`);
+
   var newRecord = new book({
     book_id: req.body.book_id,
     name: req.body.name,
@@ -31,25 +52,67 @@ router.post('/', async (req, res) => {
     trailer: req.body.trailer,
     text: req.body.text,
     image: req.body.image,
+    pitch: req.body.pitch,
     category: req.body.category,
     view: 0,
   })
   // console.log(newRecord)
   newRecord.save((err, docs) => {
     if (!err) {
-      // console.log("save successful");
-      res.redirect('/book')
+      console.log("save successful");
+      res.download(outputFilePath, (err, res) => {
+        if (err) {
+          fs.unlinkSync(outputFilePath)
+          res.send("Unable to download the file")
+        }
+        fs.unlinkSync(outputFilePath)
+      })
+      // res.redirect('/book')
+      book.findById(docs._id, async (err, data) => {
+        if (!err) {
+          let found_book_id = await book.aggregate([
+            {
+              $match: {
+                "_id": mongoose.Types.ObjectId(data._id)
+              }
+            },
+          ])
+          console.log(found_book_id)
+          // res.setHeader("Content-Type", "text/html");
+          res.render('pages/detail.ejs', { data: found_book_id, chapter: undefined });   /////ติด
+          // res.end();
+        } else
+          console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
+
+      })
     } else
       console.log('Error #2 : ' + JSON.stringify(err, undefined, 2))
+
   })
+
 })
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.post('/chapter/:id', async (req, res) => {
-  // console.log('#SAVE Chapter')
+  console.log('#SAVE Chapter')
   // console.log('book_id:: ', req.params.id)
+  const text = req.body.text
+  outputFilePath = "public/voice/" + req.body.name + ".mp3"
+  const request = {
+    input: { text: text },
+    voice: { languageCode: req.body.language, ssmlGender: 'NEUTRAL' },
+    audioConfig: { audioEncoding: 'MP3', pitch: req.body.pitch, speakingRate: 0.85 },
+  };
+  // console.log(request)
+  const [response] = await client.synthesizeSpeech(request);
+  const writeFile = util.promisify(fs.writeFile);
+  await writeFile(outputFilePath, response.audioContent, 'binary');
+  console.log(`Audio content written to file: ${outputFilePath}`);
+
   var newChapter = {
     _id: crypto_id,
     name: req.body.name,
     image: req.body.image,
+    pitch: req.body.pitch,
     text: req.body.text,
   }
   // console.log(newChapter)
@@ -57,7 +120,15 @@ router.post('/chapter/:id', async (req, res) => {
   book.findByIdAndUpdate(req.params.id, { $addToSet: { chapter: newChapter } }, async function (error, update) {
     if (!error) {
       // console.log(update)
-      // console.log('add new chapter')
+      console.log('add new chapter')
+      res.download(outputFilePath, (err, res) => {
+        if (err) {
+          fs.unlinkSync(outputFilePath)
+          res.send("Unable to download the file")
+        }
+        fs.unlinkSync(outputFilePath)
+      })
+
       let found_book_id = await book.aggregate([
         {
           $match: {
@@ -65,14 +136,14 @@ router.post('/chapter/:id', async (req, res) => {
           }
         },
       ])
-      // console.log(found_book_id[0].chapter)
-      res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
+      console.log(found_book_id[0].chapter)
+      res.status(200).render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });      /////ติด
     } else {
       console.log('Error #2 : ' + JSON.stringify(error, undefined, 2))
     }
   })
 })
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 router.post('/updatebook/:id', (req, res) => {
   // console.log(req.params.id)
@@ -105,6 +176,7 @@ router.post('/updatebook/:id', (req, res) => {
       console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
   })
 })
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.post('/updatechapter/:id/:ep_id', async (req, res) => {
   // console.log('book_id ', req.params.id)
   // console.log('ep_id ', req.params.ep_id)
@@ -147,7 +219,7 @@ router.post('/updatechapter/:id/:ep_id', async (req, res) => {
   // console.log(found_book_id[0].chapter)
   res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
 })
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 router.post('/deletechapter/:id/:ep_id', async (req, res) => {
   // console.log(req.params.name)
@@ -169,6 +241,8 @@ router.post('/deletechapter/:id/:ep_id', async (req, res) => {
   // console.log(found_book_id[0].chapter)
   res.render('pages/detail.ejs', { data: found_book_id, chapter: found_book_id[0].chapter });
 })
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 router.post('/delete/:id', (req, res) => {
   // console.log(req.params.id)
   // console.log("#DELETE")
@@ -189,7 +263,7 @@ router.get('/app', (req, res) => {
     if (!err) {
       for (let i = 0; i < docs.length; i++) {
         book.findById({ _id: docs[i]._id }, (err, data) => {
-          dateExpired = moment.utc(data.create_date).add(7, 'days').isBefore(moment.utc())
+          dateExpired = moment.utc(data.create_date).add(14, 'days').isBefore(moment.utc())
           if (dateExpired) {
             book.findByIdAndUpdate(data._id, { status: dateExpired }, { new: true }, (err, docs) => {
               if (!err) {
@@ -361,7 +435,7 @@ router.post('/continue/:id', async (req, res) => {
         )
         count = false
         res.send('time update')
-      } else if (i == (found_id.continue_book.length -1) && count == true) {
+      } else if (i == (found_id.continue_book.length - 1) && count == true) {
 
         User.findByIdAndUpdate(req.body.user_id, { $addToSet: { continue_book: newTime } }, async function (error, update) {
           if (!error) {
@@ -392,7 +466,7 @@ router.post('/removeContinue/:id', async function (req, res) {
 
 
 router.get('/app/:name', (req, res) => {
-  // console.log(req.params.name)
+  console.log(req.params.name)
   if (req.params.name == 'ใหม่ล่าสุด') {
     book.find({ status: false }, (err, docs) => {
       if (!err) {
@@ -401,7 +475,15 @@ router.get('/app/:name', (req, res) => {
       } else
         console.log('Error #3 : ' + JSON.stringify(err, undefined, 2))
     })
-  } else {
+  } else if(req.params.name == 'ยอดนิยม') {
+    book.find((err, docs) => {
+      if (!err) {
+        // console.log('docs')
+        res.send(docs)
+      } else
+        console.log('Error #4 : ' + JSON.stringify(err, undefined, 2))
+    })
+  }else {
     book.find({ category: req.params.name }, (err, docs) => {
       if (!err) {
         // console.log('docs')
