@@ -11,6 +11,8 @@ let BookSchema = new mongoose.Schema({
     trailer : String,
     text : String,
     category : String,
+    voice : String,
+    pitch: String,
     view : Number,
     image: String,
     create_date : { type: Date, default: Date.now },
