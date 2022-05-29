@@ -45,15 +45,15 @@ router.get('/profile', isLoggedIn, function (req, res) {
 
 router.post('/login', (req, res, next) => {
   // console.log('Inside POST /login callback')
-  passport.authenticate('local', async function(err, user, info){
-    if(err){
+  passport.authenticate('local', async function (err, user, info) {
+    if (err) {
       console.log(err)
     }
     // console.log(req.session)
     // console.log('Inside passport.authenticate() callback');
     // console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
     // console.log(`req.user: ${JSON.stringify(req.user)}`)
-    req.login(user,async (err) => {
+    req.login(user, async (err) => {
       if (err) { return next(err); }
       // console.log(req.session)
       // console.log(req.isAuthenticated())
@@ -88,11 +88,11 @@ router.post("/register", function (req, res) {
   if (req.body.password != req.body.c_password) {
     return res.status(400).send("confirm password error")
   }
-  User.register(new User({ email: req.body.email, mode: req.body.mode, username: req.body.username }), req.body.password,async function (error, user) {
+  User.register(new User({ email: req.body.email, mode: req.body.mode, username: req.body.username }), req.body.password, async function (error, user) {
     if (error) {
       console.log(error);
       return res.status(400).send("A user with the given username is already registered")
-    }else{
+    } else {
       const chartdata = await Chart.aggregate([
         {
           $match: {
@@ -101,8 +101,8 @@ router.post("/register", function (req, res) {
         }
       ])
       const numregis = chartdata[0].register
-      const numberregister = numregis+1
-      await Chart.findOneAndUpdate({name:'select'}, {register: numberregister});
+      const numberregister = numregis + 1
+      await Chart.findOneAndUpdate({ name: 'select' }, { register: numberregister });
       passport.authenticate('local', { successFlash: 'Welcome!' })(req, res, function () {
         return res.status(201).send("user regist successfully.")
       })
@@ -131,23 +131,25 @@ router.get('/logout', function (req, res) {
 //-----------------------------------//
 
 router.post('/passwordforgotten', async function (req, res) {
+  console.log(req.body.email)
   const user = await User.findOne({ email: req.body.email });
-  // if (!user) console.log("User does not exist")
-  let token = await Token.findOne({ userId: user._id });
-  if (token) await token.deleteOne();
-  let resetToken = crypto.randomBytes(32).toString("hex");
-  const hash = await bcrypt.hash(resetToken, Number(bcryptSalt));
-
-  await new Token({
-    userId: user._id,
-    token: hash,
-    createdAt: Date.now(),
-  }).save();
-
-  const link = `http://localhost:3000/auth/confirmresetpassword/${resetToken}/${user._id}`;
-  sendEmail(user.email, "Password Reset Request", { name: user.username, link: link, }, "./templates/requestResetPassword.handlebars");
-  res.sendStatus(200)
-  return link;
+  if (!user) {
+    console.log("User does not exist (from forgot password.)")
+  } else {
+    let token = await Token.findOne({ userId: user._id });
+    if (token) await token.deleteOne();
+    let resetToken = crypto.randomBytes(32).toString("hex");
+    const hash = await bcrypt.hash(resetToken, Number(bcryptSalt));
+    await new Token({
+      userId: user._id,
+      token: hash,
+      createdAt: Date.now(),
+    }).save();
+    const link = `https://garzipback.herokuapp.com/auth/confirmresetpassword/${resetToken}/${user._id}`;
+    sendEmail(user.email, "Password Reset Request", { name: user.username, link: link, }, "./templates/requestResetPassword.handlebars");
+    res.sendStatus(200)
+    return link;
+  }
 });
 
 //-----------------------------------//
