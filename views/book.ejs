@@ -48,8 +48,8 @@
 
         }
 
-         .btn  {
-             
+        .btn {
+
             background-color: #695CFE;
             border-radius: 50px;
             color: white;
@@ -61,6 +61,7 @@
             background-color: #a7a7a7;
 
         }
+
         .add_episode .dropbtn {
             background-color: #04AA6D;
             color: white;
@@ -69,6 +70,7 @@
             border: none;
             cursor: pointer;
         }
+
         #myInput {
             box-sizing: border-box;
             background-image: url('searchicon.png');
@@ -78,9 +80,11 @@
             padding: 14px 20px 12px 45px;
             border: none;
             border-bottom: 1px solid #ddd;
-            }
+        }
 
-        #myInput:focus {outline: 3px solid #ddd;}
+        #myInput:focus {
+            outline: 3px solid #ddd;
+        }
 
         .dropdown {
             position: relative;
@@ -104,11 +108,13 @@
             display: block;
         }
 
-        .dropdown a:hover {background-color: #ddd;}
+        .dropdown a:hover {
+            background-color: #ddd;
+        }
 
-        .show {display: block;}
-
-        
+        .show {
+            display: block;
+        }
     </style>
 
 </head>
@@ -123,14 +129,15 @@
                         <div class="test">
 
                             <form method="POST" action="/book" class="form">
+
                                 <div class="form-group">
                                     <input class="form-control" name="book_id" placeholder="book id" required>
                                     <input class="form-control" name="name" placeholder="name" required>
                                     <input class="form-control" name="auther" placeholder="auther" required>
                                     <input class="form-control" name="trailer" placeholder="trailer">
-                                    <input class="form-control" name="text" placeholder="story">
+                                    <!-- <input class="form-control" name="text" placeholder="story"> -->
                                     <input class="form-control" name="image" placeholder="url image" required>
-                                    <label for="exampleFormControlSelect1">Category</label>
+                                    <!-- <label for="exampleFormControlSelect1">Category</label> -->
                                     <select class="form-control" id="exampleFormControlSelect1" name="category"
                                         required>
                                         <option>ทั่วไป</option>
@@ -142,15 +149,27 @@
                                         <option>สืบสวน</option>
                                         <option>จิตวิทยา</option>
                                     </select>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="language"
+                                        required>
+                                        <option value="th-TH" selected>Thai</option>
+                                        <option value="en-US">English</option>
+                                    </select>
+                                    <select class="form-control" id="exampleFormControlSelect1" name="pitch" required>
+                                        <option value="1" selected>ผู้หญิง</option>
+                                        <option value="-8">ผู้ชาย</option>
+                                    </select>
+                                    <textarea class="form-control" name="text" placeholder="story" cols="30" rows="10"
+                                    maxlength="2200" required></textarea>
                                     <!-- <div class="form-group">
                                 <input type="file" class="form-control-file" id="filetest">
                             </div> -->
                                 </div>
                                 <button type="submit" class="btn" onclick="">Submit</button>
+
                             </form>
 
                         </div>
-                        
+
                         <br><br>
                         <!--    <% books.sort((a, b)=> (a._id > b._id ? -1 : 1)).forEach(function(data) { %>
                             <div class="col-6 col-md-4">
@@ -185,10 +204,10 @@
                                         <a href="<%= `/book/${data._id}?_method=POST` %>"
                                             onclick="confirm('ยืนยันลบหนังสือเสียง <%= data.name %> ?')">Delete</a>
                                     </div> -->
-                                    
-                                <!-- </div>
+
+                        <!-- </div>
                             </div>
-                            <% }); %> --> 
+                            <% }); %> -->
                     </div>
                 </center>
             </div>
@@ -224,57 +243,57 @@
                         <br><br>
 
                     </div> -->
-                </center>
-            </div>
+            </center>
+        </div>
 
-            <script>
-                function ConfirmAdd() {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You want to add a new book.",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, add it!',
-                        color: '#716add',
-                        background: '#fff url(/images/trees.png)',
-                        backdrop: `
+        <script>
+            function ConfirmAdd() {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to add a new book.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, add it!',
+                    color: '#716add',
+                    background: '#fff url(/images/trees.png)',
+                    backdrop: `
                     rgba(0,0,123,0.4)
                     url("/images/nyan-cat.gif")
                     left top
                     no-repeat
                 `
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            Swal.fire(
-                                'Added!',
-                                'Book has been added.',
-                                'success'
-                            )
-                        }
-                    })
-                }
-                function myFunction() {
-                    document.getElementById("myDropdown").classList.toggle("show");
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                            'Added!',
+                            'Book has been added.',
+                            'success'
+                        )
                     }
+                })
+            }
+            function myFunction() {
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
 
-                    function filterFunction() {
-                    var input, filter, ul, li, a, i;
-                    input = document.getElementById("myInput");
-                    filter = input.value.toUpperCase();
-                    div = document.getElementById("myDropdown");
-                    a = div.getElementsByTagName("a");
-                    for (i = 0; i < a.length; i++) {
-                        txtValue = a[i].textContent || a[i].innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            function filterFunction() {
+                var input, filter, ul, li, a, i;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase();
+                div = document.getElementById("myDropdown");
+                a = div.getElementsByTagName("a");
+                for (i = 0; i < a.length; i++) {
+                    txtValue = a[i].textContent || a[i].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
                         a[i].style.display = "";
-                        } else {
+                    } else {
                         a[i].style.display = "none";
-                        }
                     }
-                    }
-            </script>
+                }
+            }
+        </script>
         </div>
 </body>
 
