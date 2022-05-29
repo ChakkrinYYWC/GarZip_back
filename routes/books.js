@@ -68,18 +68,18 @@ router.post('/', async (req, res) => {
         fs.unlinkSync(outputFilePath)
       })
       // res.redirect('/book')
-      book.findById(docs._id, async (err, docs) => {
+      book.findById(docs._id, async (err, data) => {
         if (!err) {
           let found_book_id = await book.aggregate([
             {
               $match: {
-                "_id": mongoose.Types.ObjectId(docs._id)
+                "_id": mongoose.Types.ObjectId(data._id)
               }
             },
           ])
           console.log(found_book_id)
           // res.setHeader("Content-Type", "text/html");
-          res.status(200).render('pages/detail.ejs', { data: found_book_id, chapter: undefined });   /////ติด
+          res.render('pages/detail.ejs', { data: found_book_id, chapter: undefined });   /////ติด
           // res.end();
         } else
           console.log('Error #1 : ' + JSON.stringify(err, undefined, 2))
@@ -87,6 +87,7 @@ router.post('/', async (req, res) => {
       })
     } else
       console.log('Error #2 : ' + JSON.stringify(err, undefined, 2))
+
   })
 
 })
@@ -262,7 +263,7 @@ router.get('/app', (req, res) => {
     if (!err) {
       for (let i = 0; i < docs.length; i++) {
         book.findById({ _id: docs[i]._id }, (err, data) => {
-          dateExpired = moment.utc(data.create_date).add(1, 'days').isBefore(moment.utc())
+          dateExpired = moment.utc(data.create_date).add(14, 'days').isBefore(moment.utc())
           if (dateExpired) {
             book.findByIdAndUpdate(data._id, { status: dateExpired }, { new: true }, (err, docs) => {
               if (!err) {
