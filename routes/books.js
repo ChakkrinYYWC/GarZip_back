@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
   // console.log('category :: ' + req.body.category)
 
   const text = req.body.text
-  outputFilePath = "public/voice/" + req.body.name + ".mp3"
+  outputFilePath = req.body.name + ".mp3"
   const request = {
     input: { text: text },
     voice: { languageCode: req.body.language, ssmlGender: 'NEUTRAL' },
@@ -91,7 +91,7 @@ router.post('/chapter/:id', async (req, res) => {
   console.log('#SAVE Chapter')
   // console.log('book_id:: ', req.params.id)
   const text = req.body.text
-  outputFilePath = "public/voice/" + req.body.name + ".mp3"
+  outputFilePath = req.body.name + ".mp3"
   const request = {
     input: { text: text },
     voice: { languageCode: req.body.language, ssmlGender: 'NEUTRAL' },
